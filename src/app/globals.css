@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+@theme {
+  /* Primary */
+  --color-primary: #21264e;
+  --color-primary-light: #2d3366;
+  --color-primary-dark: #181c3a;
+  /* Background */
+  --color-bg: #fff7f2;
+  --color-bg-card: #ffffff;
+  /* Accents */
+  --color-accent-blue: #245bc1;
+  --color-accent-green: #08dc7d;
+  --color-accent-peach: #ffc8b2;
+  --color-accent-yellow: #FFDD64;
+  --color-accent-cyan: #00D7FF;
+  --color-accent-purple: #46286E;
+  /* Functional */
+  --color-star-gold: #FFDD64;
+  --color-success: #08dc7d;
+  --color-danger: #e4002b;
+  --color-warning: #FFDD64;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Custom select styling */
+select {
+  background-image: none;
+}
+
+/* Hide scrollbar for cleaner mobile look */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Pulse animation for submission */
+@keyframes success-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.85; }
+}
+.animate-success-pulse {
+  animation: success-pulse 0.7s ease-in-out 2;
+}
+
+/* Star rating hover effect */
+.star-btn {
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+.star-btn:hover {
+  transform: scale(1.25);
+}
+.star-btn:active {
+  transform: scale(0.9);
+}
+
+/* Slide up animation */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-slide-up {
+  animation: slideUp 0.45s ease-out forwards;
+}
+
+/* Card entry animation */
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-fade-in-scale {
+  animation: fadeInScale 0.35s ease-out forwards;
+}
+
+/* Gradient shimmer for header */
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.shimmer-bar {
+  background: linear-gradient(90deg, #08dc7d, #00D7FF, #FFDD64, #245bc1, #08dc7d);
+  background-size: 200% 100%;
+  animation: shimmer 4s linear infinite;
+}
+
+/* Floating label animation */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
