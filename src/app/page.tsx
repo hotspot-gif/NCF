@@ -20,9 +20,9 @@ export default function Home() {
             <div className="flex items-center gap-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://cms-assets.ldsvcplatform.com/IT/s3fs-public/2023-09/home_logo.png"
+                src="https://cms-assets.ldsvcplatform.com/IT/s3fs-public/inline-images/logo_new1.png"
                 alt="Lycamobile"
-                className="h-7 object-contain brightness-0 invert"
+                className="h-7"
               />
             </div>
             <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1">
