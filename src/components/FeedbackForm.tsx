@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import StarRating from "./StarRating";
 import { teamUsers, getUsersByOffice } from "@/data/users";
+import { translations, type Language } from "@/data/translations";
 
 interface FormData {
   reporterName: string;
@@ -67,37 +68,14 @@ const italianRegions = [
   "Trentino-Alto Adige", "Umbria", "Valle d'Aosta", "Veneto",
 ];
 
-const issueTypes = [
-  "No issues",
-  "Poor signal in buildings",
-  "Dropped calls",
-  "Slow data speeds",
-  "No data connection",
-  "SMS delivery delays",
-  "Network not available",
-  "Frequent disconnections",
-  "Poor VoLTE quality",
-  "Roaming issues",
-  "Other",
-];
+interface FeedbackFormProps {
+  language: Language;
+}
 
-const frequencies = [
-  "Rarely (once a week)",
-  "Sometimes (2-3 times/week)",
-  "Often (daily)",
-  "Very often (multiple times/day)",
-  "Constantly",
-];
+export default function FeedbackForm({ language }: FeedbackFormProps) {
+  const t = translations[language];
+  const tf = t.form;
 
-const comparisonOptions = [
-  { value: "much_better", label: "Much Better", emoji: "🟢", color: "border-accent-green bg-accent-green/5 text-accent-green" },
-  { value: "better", label: "Better", emoji: "🔵", color: "border-accent-blue bg-accent-blue/5 text-accent-blue" },
-  { value: "same", label: "About the Same", emoji: "🟡", color: "border-accent-yellow bg-accent-yellow/10 text-yellow-700" },
-  { value: "worse", label: "Worse", emoji: "🟠", color: "border-orange-400 bg-orange-50 text-orange-600" },
-  { value: "much_worse", label: "Much Worse", emoji: "🔴", color: "border-red-400 bg-red-50 text-red-600" },
-];
-
-export default function FeedbackForm() {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [step, setStep] = useState(1);
   const [submitting, setSubmitting] = useState(false);
@@ -155,6 +133,14 @@ export default function FeedbackForm() {
   const canSubmit =
     formData.overallSatisfaction > 0 && formData.comparedToBefore !== "";
 
+  const comparisonOptions = [
+    { value: "much_better", label: tf.muchBetter, emoji: "🟢", color: "border-accent-green bg-accent-green/5 text-accent-green" },
+    { value: "better", label: tf.better, emoji: "🔵", color: "border-accent-blue bg-accent-blue/5 text-accent-blue" },
+    { value: "same", label: tf.aboutSame, emoji: "🟡", color: "border-accent-yellow bg-accent-yellow/10 text-yellow-700" },
+    { value: "worse", label: tf.worse, emoji: "🟠", color: "border-orange-400 bg-orange-50 text-orange-600" },
+    { value: "much_worse", label: tf.muchWorse, emoji: "🔴", color: "border-red-400 bg-red-50 text-red-600" },
+  ];
+
   const handleSubmit = async () => {
     setSubmitting(true);
     setError("");
@@ -166,11 +152,11 @@ export default function FeedbackForm() {
       });
       if (!res.ok) {
         const data = await res.json();
-        throw new Error(data.error || "Submission failed");
+        throw new Error(data.error || tf.errors.submissionFailed);
       }
       setSubmitted(true);
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Something went wrong";
+      const message = err instanceof Error ? err.message : tf.errors.somethingWentWrong;
       setError(message);
     } finally {
       setSubmitting(false);
@@ -192,26 +178,26 @@ export default function FeedbackForm() {
           <CheckCircle2 size={52} className="text-accent-green" />
         </div>
         <h2 className="text-2xl font-bold text-primary mb-2">
-          Grazie! Thank You!
+          {tf.successTitle}
         </h2>
         <p className="text-slate-600 mb-1">
-          Your feedback has been submitted successfully.
+          {tf.successMessage1}
         </p>
         <p className="text-sm text-slate-400 mb-8">
-          Your input helps us improve network quality across Italy.
+          {tf.successMessage2}
         </p>
         <button
           onClick={resetForm}
           className="bg-primary text-white px-8 py-3.5 rounded-2xl font-semibold shadow-lg shadow-primary/20 hover:bg-primary-light active:scale-95 transition-all"
         >
-          Submit Another Report
+          {tf.submitAnother}
         </button>
       </div>
     );
   }
 
   // ---------- STEP LABELS ----------
-  const stepLabels = ["Your Info", "Ratings", "Submit"];
+  const stepLabels = tf.stepLabels;
 
   return (
     <div className="pb-6">
@@ -258,7 +244,7 @@ export default function FeedbackForm() {
               <div className="w-8 h-8 rounded-xl bg-accent-blue/10 flex items-center justify-center">
                 <UserCircle size={18} className="text-accent-blue" />
               </div>
-              <h3 className="font-bold text-primary text-[15px]">Select Your Name</h3>
+              <h3 className="font-bold text-primary text-[15px]">{tf.selectYourName}</h3>
             </div>
 
             {/* Selected User Display */}
@@ -276,7 +262,7 @@ export default function FeedbackForm() {
                   }}
                   className="text-xs text-accent-blue font-semibold hover:underline"
                 >
-                  Change
+                  {tf.change}
                 </button>
               </div>
             ) : (
@@ -292,7 +278,7 @@ export default function FeedbackForm() {
                       setShowUserPicker(true);
                     }}
                     onFocus={() => setShowUserPicker(true)}
-                    placeholder="Search by name, role, or office..."
+                    placeholder={tf.searchNamePlaceholder}
                     className="w-full pl-10 pr-10 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all"
                   />
                   {userSearch && (
@@ -324,7 +310,7 @@ export default function FeedbackForm() {
                     </div>
                   ) : filteredUsers && filteredUsers.length === 0 ? (
                     <div className="py-6 text-center text-sm text-slate-400">
-                      No users found
+                      {tf.noUsersFound}
                     </div>
                   ) : (
                     // Default grouped list
@@ -332,7 +318,7 @@ export default function FeedbackForm() {
                       {Object.entries(usersByOffice).map(([office, users]) => (
                         <div key={office}>
                           <div className="sticky top-0 bg-slate-50 px-4 py-1.5 text-[10px] font-bold text-accent-purple uppercase tracking-wider border-b border-slate-100">
-                            {office === "Management" ? "🏢 Management" : `📍 ${office}`}
+                            {office === "Management" ? tf.management : `📍 ${office}`}
                           </div>
                           {users.map((u) => (
                             <button
@@ -359,13 +345,13 @@ export default function FeedbackForm() {
               <div className="w-8 h-8 rounded-xl bg-accent-green/10 flex items-center justify-center">
                 <MapPin size={18} className="text-accent-green" />
               </div>
-              <h3 className="font-bold text-primary text-[15px]">Coverage Location</h3>
+              <h3 className="font-bold text-primary text-[15px]">{tf.coverageLocation}</h3>
             </div>
 
             <div className="space-y-4">
               <div className="relative">
                 <label className="block text-xs font-semibold text-primary/70 mb-1.5 uppercase tracking-wide">
-                  Region <span className="text-danger">*</span>
+                  {tf.region} <span className="text-danger">{t.common.required}</span>
                 </label>
                 <div className="relative">
                   <select
@@ -373,7 +359,7 @@ export default function FeedbackForm() {
                     onChange={(e) => updateField("region", e.target.value)}
                     className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all appearance-none pr-10"
                   >
-                    <option value="">Select region</option>
+                    <option value="">{tf.selectRegion}</option>
                     {italianRegions.map((r) => (
                       <option key={r} value={r}>{r}</option>
                     ))}
@@ -384,42 +370,42 @@ export default function FeedbackForm() {
 
               <div>
                 <label className="block text-xs font-semibold text-primary/70 mb-1.5 uppercase tracking-wide">
-                  City / Area <span className="text-danger">*</span>
+                  {tf.cityArea} <span className="text-danger">{t.common.required}</span>
                 </label>
                 <input
                   type="text"
                   value={formData.city}
                   onChange={(e) => updateField("city", e.target.value)}
-                  placeholder="e.g., Milano, Roma Centro, Napoli Vomero"
+                  placeholder={tf.cityPlaceholder}
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all"
                 />
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-primary/70 mb-1.5 uppercase tracking-wide">
-                  Address / Street <span className="text-danger">*</span>
+                  {tf.addressStreet} <span className="text-danger">{t.common.required}</span>
                 </label>
                 <textarea
                   value={formData.address}
                   onChange={(e) => updateField("address", e.target.value)}
-                  placeholder="e.g., Via Roma 123, Piazza del Duomo, Centro Commerciale..."
+                  placeholder={tf.addressPlaceholder}
                   rows={2}
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all resize-none"
                 />
                 <p className="text-[10px] text-slate-300 mt-1">
-                  Specific street or landmark where coverage was tested
+                  {tf.addressHint}
                 </p>
               </div>
 
               <div>
                 <label className="block text-xs font-semibold text-primary/70 mb-1.5 uppercase tracking-wide">
-                  Post Code / CAP <span className="text-danger">*</span>
+                  {tf.postCode} <span className="text-danger">{t.common.required}</span>
                 </label>
                 <input
                   type="text"
                   value={formData.postCode}
                   onChange={(e) => updateField("postCode", e.target.value)}
-                  placeholder="e.g., 20121"
+                  placeholder={tf.postCodePlaceholder}
                   maxLength={10}
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all"
                 />
@@ -436,7 +422,7 @@ export default function FeedbackForm() {
                 : "bg-slate-300 cursor-not-allowed"
             }`}
           >
-            Continue to Ratings →
+            {tf.continueToRatings}
           </button>
         </div>
       )}
@@ -449,41 +435,46 @@ export default function FeedbackForm() {
               <div className="w-8 h-8 rounded-xl bg-accent-cyan/10 flex items-center justify-center">
                 <Signal size={18} className="text-accent-cyan" />
               </div>
-              <h3 className="font-bold text-primary text-[15px]">Network Performance</h3>
+              <h3 className="font-bold text-primary text-[15px]">{tf.networkPerformance}</h3>
             </div>
             <p className="text-[11px] text-slate-400 mb-5 ml-[42px]">
-              Rate each aspect from 1 (Poor) to 5 (Excellent)
+              {tf.rateEachHint}
             </p>
 
             <StarRating
-              label="📶 Signal Strength"
-              description="Overall mobile signal reception in your area"
+              label={tf.signalStrength}
+              description={tf.signalStrengthDesc}
               value={formData.signalStrength}
               onChange={(v) => updateField("signalStrength", v)}
+              ratingLabels={tf.ratingLabels}
             />
             <StarRating
-              label="🌐 Data Speed"
-              description="4G/LTE internet speed performance"
+              label={tf.dataSpeed}
+              description={tf.dataSpeedDesc}
               value={formData.dataSpeed}
               onChange={(v) => updateField("dataSpeed", v)}
+              ratingLabels={tf.ratingLabels}
             />
             <StarRating
-              label="📞 Call Quality"
-              description="Voice clarity and call connection reliability"
+              label={tf.callQuality}
+              description={tf.callQualityDesc}
               value={formData.callQuality}
               onChange={(v) => updateField("callQuality", v)}
+              ratingLabels={tf.ratingLabels}
             />
             <StarRating
-              label="💬 SMS Reliability"
-              description="Text message delivery speed and reliability"
+              label={tf.smsReliability}
+              description={tf.smsReliabilityDesc}
               value={formData.smsReliability}
               onChange={(v) => updateField("smsReliability", v)}
+              ratingLabels={tf.ratingLabels}
             />
             <StarRating
-              label="⚡ Network Stability"
-              description="Connection consistency without drops"
+              label={tf.networkStability}
+              description={tf.networkStabilityDesc}
               value={formData.networkStability}
               onChange={(v) => updateField("networkStability", v)}
+              ratingLabels={tf.ratingLabels}
             />
           </div>
 
@@ -492,7 +483,7 @@ export default function FeedbackForm() {
               onClick={() => setStep(1)}
               className="flex-1 py-3.5 rounded-2xl font-semibold text-primary bg-white border-2 border-slate-200 hover:border-primary/20 active:scale-[0.98] transition-all text-sm"
             >
-              ← Back
+              {tf.back}
             </button>
             <button
               onClick={() => setStep(3)}
@@ -503,7 +494,7 @@ export default function FeedbackForm() {
                   : "bg-slate-300 cursor-not-allowed"
               }`}
             >
-              Continue →
+              {tf.continue}
             </button>
           </div>
         </div>
@@ -518,19 +509,20 @@ export default function FeedbackForm() {
               <div className="w-8 h-8 rounded-xl bg-accent-yellow/20 flex items-center justify-center">
                 <Zap size={18} className="text-yellow-600" />
               </div>
-              <h3 className="font-bold text-primary text-[15px]">Overall Assessment</h3>
+              <h3 className="font-bold text-primary text-[15px]">{tf.overallAssessment}</h3>
             </div>
 
             <StarRating
-              label="⭐ Overall Satisfaction"
-              description="Your overall experience with the TIM network"
+              label={tf.overallSatisfaction}
+              description={tf.overallSatisfactionDesc}
               value={formData.overallSatisfaction}
               onChange={(v) => updateField("overallSatisfaction", v)}
+              ratingLabels={tf.ratingLabels}
             />
 
             <div className="mt-5">
               <label className="block text-xs font-semibold text-primary/70 mb-2.5 uppercase tracking-wide">
-                Compared to Before Migration <span className="text-danger">*</span>
+                {tf.comparedToBefore} <span className="text-danger">{t.common.required}</span>
               </label>
               <div className="grid grid-cols-1 gap-2">
                 {comparisonOptions.map((opt) => (
@@ -558,14 +550,14 @@ export default function FeedbackForm() {
               <div className="w-8 h-8 rounded-xl bg-accent-purple/10 flex items-center justify-center">
                 <AlertTriangle size={18} className="text-accent-purple" />
               </div>
-              <h3 className="font-bold text-primary text-[15px]">Issue Details</h3>
-              <span className="text-[10px] text-slate-300 ml-auto bg-slate-100 px-2 py-0.5 rounded-full font-medium">Optional</span>
+              <h3 className="font-bold text-primary text-[15px]">{tf.issueDetails}</h3>
+              <span className="text-[10px] text-slate-300 ml-auto bg-slate-100 px-2 py-0.5 rounded-full font-medium">{t.common.optional}</span>
             </div>
 
             <div className="space-y-4">
               <div className="relative">
                 <label className="block text-xs font-semibold text-primary/70 mb-1.5 uppercase tracking-wide">
-                  Primary Issue
+                  {tf.primaryIssue}
                 </label>
                 <div className="relative">
                   <select
@@ -573,9 +565,9 @@ export default function FeedbackForm() {
                     onChange={(e) => updateField("primaryIssue", e.target.value)}
                     className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all appearance-none pr-10"
                   >
-                    <option value="">Select an issue</option>
-                    {issueTypes.map((i) => (
-                      <option key={i} value={i}>{i}</option>
+                    <option value="">{tf.selectIssue}</option>
+                    {tf.issueTypes.map((i, idx) => (
+                      <option key={idx} value={translations.en.form.issueTypes[idx]}>{i}</option>
                     ))}
                   </select>
                   <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
@@ -584,7 +576,7 @@ export default function FeedbackForm() {
 
               <div className="relative">
                 <label className="block text-xs font-semibold text-primary/70 mb-1.5 uppercase tracking-wide">
-                  How Often?
+                  {tf.howOften}
                 </label>
                 <div className="relative">
                   <select
@@ -592,9 +584,9 @@ export default function FeedbackForm() {
                     onChange={(e) => updateField("issueFrequency", e.target.value)}
                     className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all appearance-none pr-10"
                   >
-                    <option value="">Select frequency</option>
-                    {frequencies.map((f) => (
-                      <option key={f} value={f}>{f}</option>
+                    <option value="">{tf.selectFrequency}</option>
+                    {tf.frequencies.map((f, idx) => (
+                      <option key={idx} value={translations.en.form.frequencies[idx]}>{f}</option>
                     ))}
                   </select>
                   <ChevronDown size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none" />
@@ -603,13 +595,13 @@ export default function FeedbackForm() {
 
               <div>
                 <label className="block text-xs font-semibold text-primary/70 mb-1.5 uppercase tracking-wide">
-                  Affected Locations
+                  {tf.affectedLocations}
                 </label>
                 <input
                   type="text"
                   value={formData.affectedAreas}
                   onChange={(e) => updateField("affectedAreas", e.target.value)}
-                  placeholder="e.g., Underground, Shopping malls, Suburbs"
+                  placeholder={tf.affectedLocationsPlaceholder}
                   className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all"
                 />
               </div>
@@ -622,7 +614,7 @@ export default function FeedbackForm() {
                   className="w-5 h-5 rounded border-slate-300 accent-accent-blue"
                 />
                 <span className="text-sm text-slate-700">
-                  Receiving customer complaints about network
+                  {tf.customerComplaints}
                 </span>
               </label>
             </div>
@@ -634,13 +626,13 @@ export default function FeedbackForm() {
               <div className="w-8 h-8 rounded-xl bg-accent-peach/30 flex items-center justify-center">
                 <Activity size={18} className="text-orange-500" />
               </div>
-              <h3 className="font-bold text-primary text-[15px]">Additional Notes</h3>
-              <span className="text-[10px] text-slate-300 ml-auto bg-slate-100 px-2 py-0.5 rounded-full font-medium">Optional</span>
+              <h3 className="font-bold text-primary text-[15px]">{tf.additionalNotes}</h3>
+              <span className="text-[10px] text-slate-300 ml-auto bg-slate-100 px-2 py-0.5 rounded-full font-medium">{t.common.optional}</span>
             </div>
             <textarea
               value={formData.additionalNotes}
               onChange={(e) => updateField("additionalNotes", e.target.value)}
-              placeholder="Share any additional observations about the network after TIM migration..."
+              placeholder={tf.additionalNotesPlaceholder}
               rows={4}
               className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all resize-none"
             />
@@ -658,7 +650,7 @@ export default function FeedbackForm() {
               onClick={() => setStep(2)}
               className="flex-1 py-3.5 rounded-2xl font-semibold text-primary bg-white border-2 border-slate-200 hover:border-primary/20 active:scale-[0.98] transition-all text-sm"
             >
-              ← Back
+              {tf.back}
             </button>
             <button
               onClick={handleSubmit}
@@ -672,12 +664,12 @@ export default function FeedbackForm() {
               {submitting ? (
                 <>
                   <Loader2 size={18} className="animate-spin" />
-                  Submitting...
+                  {tf.submitting}
                 </>
               ) : (
                 <>
                   <Send size={16} />
-                  Submit Feedback
+                  {tf.submitFeedback}
                 </>
               )}
             </button>

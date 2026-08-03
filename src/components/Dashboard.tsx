@@ -19,6 +19,7 @@ import {
   Clock,
   AlertTriangle,
 } from "lucide-react";
+import { translations, type Language } from "@/data/translations";
 
 interface Stats {
   totalResponses: number;
@@ -53,16 +54,9 @@ interface FeedbackItem {
   createdAt: string;
 }
 
-const comparisonLabels: Record<
-  string,
-  { label: string; color: string; bg: string; icon: typeof TrendingUp }
-> = {
-  much_better: { label: "Much Better", color: "text-accent-green", bg: "bg-accent-green/10", icon: TrendingUp },
-  better: { label: "Better", color: "text-accent-blue", bg: "bg-accent-blue/10", icon: TrendingUp },
-  same: { label: "Same", color: "text-yellow-600", bg: "bg-accent-yellow/20", icon: Minus },
-  worse: { label: "Worse", color: "text-orange-500", bg: "bg-orange-50", icon: TrendingDown },
-  much_worse: { label: "Much Worse", color: "text-red-600", bg: "bg-red-50", icon: TrendingDown },
-};
+interface DashboardProps {
+  language: Language;
+}
 
 function RatingBar({
   label,
@@ -108,10 +102,24 @@ function RatingBar({
   );
 }
 
-export default function Dashboard() {
+export default function Dashboard({ language }: DashboardProps) {
+  const t = translations[language];
+  const td = t.dashboard;
+
   const [stats, setStats] = useState<Stats | null>(null);
   const [feedbacks, setFeedbacks] = useState<FeedbackItem[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const comparisonLabels: Record<
+    string,
+    { label: string; color: string; bg: string; icon: typeof TrendingUp }
+  > = {
+    much_better: { label: td.comparisonLabels.muchBetter, color: "text-accent-green", bg: "bg-accent-green/10", icon: TrendingUp },
+    better: { label: td.comparisonLabels.better, color: "text-accent-blue", bg: "bg-accent-blue/10", icon: TrendingUp },
+    same: { label: td.comparisonLabels.same, color: "text-yellow-600", bg: "bg-accent-yellow/20", icon: Minus },
+    worse: { label: td.comparisonLabels.worse, color: "text-orange-500", bg: "bg-orange-50", icon: TrendingDown },
+    much_worse: { label: td.comparisonLabels.muchWorse, color: "text-red-600", bg: "bg-red-50", icon: TrendingDown },
+  };
 
   const fetchData = async () => {
     setLoading(true);
@@ -139,7 +147,7 @@ export default function Dashboard() {
     return (
       <div className="flex flex-col items-center justify-center py-20">
         <Loader2 size={36} className="animate-spin text-accent-blue mb-3" />
-        <p className="text-sm text-slate-400">Loading dashboard...</p>
+        <p className="text-sm text-slate-400">{td.loading}</p>
       </div>
     );
   }
@@ -153,7 +161,7 @@ export default function Dashboard() {
           className="flex items-center gap-1.5 text-xs text-accent-blue font-semibold hover:text-accent-blue/80 bg-accent-blue/5 px-3 py-1.5 rounded-full transition-all"
         >
           <RefreshCcw size={12} />
-          Refresh
+          {td.refresh}
         </button>
       </div>
 
@@ -164,12 +172,12 @@ export default function Dashboard() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-[11px] text-slate-400 font-medium uppercase tracking-wide mb-0.5">
-                Total Responses
+                {td.totalResponses}
               </p>
               <p className="text-4xl font-extrabold text-primary">
                 {stats?.totalResponses ?? 0}
               </p>
-              <p className="text-[10px] text-slate-300 mt-0.5">feedback reports submitted</p>
+              <p className="text-[10px] text-slate-300 mt-0.5">{td.totalResponsesSubtitle}</p>
             </div>
             <div className="w-14 h-14 bg-gradient-to-br from-accent-blue to-accent-purple rounded-2xl flex items-center justify-center shadow-lg shadow-accent-blue/20">
               <Users size={26} className="text-white" />
@@ -182,13 +190,13 @@ export default function Dashboard() {
           <div className="flex items-center gap-1.5 mb-2">
             <Star size={12} className="text-star-gold fill-star-gold" />
             <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wide">
-              Satisfaction
+              {td.satisfaction}
             </p>
           </div>
           <p className="text-3xl font-extrabold text-primary">
             {stats?.avgOverallSatisfaction ? Number(stats.avgOverallSatisfaction).toFixed(1) : "—"}
           </p>
-          <p className="text-[10px] text-slate-300">out of 5.0</p>
+          <p className="text-[10px] text-slate-300">{td.outOfFive}</p>
         </div>
 
         {/* Data Speed */}
@@ -196,13 +204,13 @@ export default function Dashboard() {
           <div className="flex items-center gap-1.5 mb-2">
             <Wifi size={12} className="text-accent-cyan" />
             <p className="text-[10px] text-slate-400 font-medium uppercase tracking-wide">
-              Data Speed
+              {td.dataSpeed}
             </p>
           </div>
           <p className="text-3xl font-extrabold text-primary">
             {stats?.avgDataSpeed ? Number(stats.avgDataSpeed).toFixed(1) : "—"}
           </p>
-          <p className="text-[10px] text-slate-300">out of 5.0</p>
+          <p className="text-[10px] text-slate-300">{td.outOfFive}</p>
         </div>
       </div>
 
@@ -212,16 +220,16 @@ export default function Dashboard() {
           <div className="bg-bg-card rounded-2xl p-5 shadow-sm border border-accent-peach/30">
             <h3 className="font-bold text-primary mb-1 flex items-center gap-2 text-[15px]">
               <BarChart3 size={16} className="text-accent-blue" />
-              Average Ratings
+              {td.averageRatings}
             </h3>
             <p className="text-[10px] text-slate-400 mb-3 ml-6">
-              Aggregated from all {stats.totalResponses} responses
+              {td.aggregatedFrom.replace("all responses", `all ${stats.totalResponses} ${td.totalResponses.toLowerCase()}`)}
             </p>
-            <RatingBar label="Signal Strength" value={Number(stats.avgSignalStrength) || 0} icon={Signal} accentColor="bg-accent-blue" />
-            <RatingBar label="Data Speed" value={Number(stats.avgDataSpeed) || 0} icon={Wifi} accentColor="bg-accent-cyan" />
-            <RatingBar label="Call Quality" value={Number(stats.avgCallQuality) || 0} icon={Phone} accentColor="bg-accent-green" />
-            <RatingBar label="SMS Reliability" value={Number(stats.avgSmsReliability) || 0} icon={MessageSquare} accentColor="bg-accent-purple" />
-            <RatingBar label="Network Stability" value={Number(stats.avgNetworkStability) || 0} icon={Activity} accentColor="bg-orange-400" />
+            <RatingBar label={td.avgSignalStrength} value={Number(stats.avgSignalStrength) || 0} icon={Signal} accentColor="bg-accent-blue" />
+            <RatingBar label={td.avgDataSpeed} value={Number(stats.avgDataSpeed) || 0} icon={Wifi} accentColor="bg-accent-cyan" />
+            <RatingBar label={td.avgCallQuality} value={Number(stats.avgCallQuality) || 0} icon={Phone} accentColor="bg-accent-green" />
+            <RatingBar label={td.avgSmsReliability} value={Number(stats.avgSmsReliability) || 0} icon={MessageSquare} accentColor="bg-accent-purple" />
+            <RatingBar label={td.avgNetworkStability} value={Number(stats.avgNetworkStability) || 0} icon={Activity} accentColor="bg-orange-400" />
           </div>
         </div>
       )}
@@ -230,7 +238,7 @@ export default function Dashboard() {
       <div className="px-4">
         <h3 className="font-bold text-primary mb-3 flex items-center gap-2 text-[15px]">
           <Clock size={16} className="text-accent-purple" />
-          Recent Feedback
+          {td.recentFeedback}
           <span className="text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-bold ml-auto">
             {feedbacks.length}
           </span>
@@ -241,9 +249,9 @@ export default function Dashboard() {
             <div className="w-14 h-14 mx-auto mb-3 bg-accent-peach/30 rounded-2xl flex items-center justify-center">
               <MessageSquare size={24} className="text-accent-peach" />
             </div>
-            <p className="text-sm text-slate-500 font-medium">No feedback yet</p>
+            <p className="text-sm text-slate-500 font-medium">{td.noFeedback}</p>
             <p className="text-xs text-slate-300 mt-1">
-              Responses will appear here once submitted
+              {td.noFeedbackSubtitle}
             </p>
           </div>
         ) : (
@@ -251,6 +259,18 @@ export default function Dashboard() {
             {feedbacks.map((fb) => {
               const comp = comparisonLabels[fb.comparedToBefore];
               const CompIcon = comp?.icon || Minus;
+              const primaryIssueDisplay = language === "it"
+                ? (() => {
+                    const idx = translations.en.form.issueTypes.indexOf(fb.primaryIssue ?? "");
+                    return idx >= 0 ? translations.it.form.issueTypes[idx] : fb.primaryIssue;
+                  })()
+                : fb.primaryIssue;
+              const issueFreqDisplay = language === "it"
+                ? (() => {
+                    const idx = translations.en.form.frequencies.indexOf(fb.issueFrequency ?? "");
+                    return idx >= 0 ? translations.it.form.frequencies[idx] : fb.issueFrequency;
+                  })()
+                : fb.issueFrequency;
               return (
                 <div
                   key={fb.id}
@@ -281,7 +301,7 @@ export default function Dashboard() {
                       <MapPin size={10} className="shrink-0" />
                       {fb.city}{fb.postCode ? ` ${fb.postCode}` : ""}, {fb.region}
                       <span className="text-slate-200 mx-0.5">•</span>
-                      {new Date(fb.createdAt).toLocaleDateString("en-GB", {
+                      {new Date(fb.createdAt).toLocaleDateString(language === "it" ? "it-IT" : "en-GB", {
                         day: "2-digit",
                         month: "short",
                         hour: "2-digit",
@@ -298,11 +318,11 @@ export default function Dashboard() {
                   {/* Mini ratings */}
                   <div className="grid grid-cols-5 gap-1.5 mb-3">
                     {[
-                      { icon: Signal, val: fb.signalStrength, tip: "Signal", bg: "bg-accent-blue/8" },
-                      { icon: Wifi, val: fb.dataSpeed, tip: "Data", bg: "bg-accent-cyan/8" },
-                      { icon: Phone, val: fb.callQuality, tip: "Call", bg: "bg-accent-green/8" },
-                      { icon: MessageSquare, val: fb.smsReliability, tip: "SMS", bg: "bg-accent-purple/8" },
-                      { icon: Activity, val: fb.networkStability, tip: "Stability", bg: "bg-orange-50" },
+                      { icon: Signal, val: fb.signalStrength, tip: td.signal, bg: "bg-accent-blue/8" },
+                      { icon: Wifi, val: fb.dataSpeed, tip: td.data, bg: "bg-accent-cyan/8" },
+                      { icon: Phone, val: fb.callQuality, tip: td.call, bg: "bg-accent-green/8" },
+                      { icon: MessageSquare, val: fb.smsReliability, tip: td.sms, bg: "bg-accent-purple/8" },
+                      { icon: Activity, val: fb.networkStability, tip: td.stability, bg: "bg-orange-50" },
                     ].map((item, idx) => (
                       <div
                         key={idx}
@@ -321,17 +341,17 @@ export default function Dashboard() {
                   {comp && (
                     <div className={`inline-flex items-center gap-1.5 text-[11px] font-semibold ${comp.color} ${comp.bg} px-2.5 py-1 rounded-lg`}>
                       <CompIcon size={11} />
-                      vs. Before: {comp.label}
+                      {td.vsBefore}: {comp.label}
                     </div>
                   )}
 
                   {/* Issue */}
-                  {fb.primaryIssue && fb.primaryIssue !== "No issues" && (
+                  {primaryIssueDisplay && primaryIssueDisplay !== (language === "it" ? translations.it.form.issueTypes[0] : translations.en.form.issueTypes[0]) && (
                     <div className="flex items-start gap-1.5 mt-2 text-[11px] text-red-600 bg-red-50 rounded-xl px-3 py-2">
                       <AlertTriangle size={12} className="shrink-0 mt-0.5" />
                       <span>
-                        {fb.primaryIssue}
-                        {fb.issueFrequency ? ` — ${fb.issueFrequency}` : ""}
+                        {primaryIssueDisplay}
+                        {issueFreqDisplay ? ` — ${issueFreqDisplay}` : ""}
                       </span>
                     </div>
                   )}

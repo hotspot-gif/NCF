@@ -7,9 +7,13 @@ interface StarRatingProps {
   onChange: (value: number) => void;
   label: string;
   description?: string;
+  ratingLabels?: [string, string, string, string, string, string];
 }
 
-const ratingLabels = ["", "Poor", "Fair", "Good", "Very Good", "Excellent"];
+const defaultRatingLabels: [string, string, string, string, string, string] = [
+  "", "Poor", "Fair", "Good", "Very Good", "Excellent",
+];
+
 const ratingColors = [
   "",
   "bg-red-100 text-red-600",
@@ -24,6 +28,7 @@ export default function StarRating({
   onChange,
   label,
   description,
+  ratingLabels = defaultRatingLabels,
 }: StarRatingProps) {
   return (
     <div className="mb-5">

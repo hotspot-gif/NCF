@@ -1,16 +1,24 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { BarChart3, ClipboardList, Signal } from "lucide-react";
+import { BarChart3, ClipboardList, Signal, Globe } from "lucide-react";
 import FeedbackForm from "@/components/FeedbackForm";
 import Dashboard from "@/components/Dashboard";
+import { translations, type Language } from "@/data/translations";
 
 export default function Home() {
   const [view, setView] = useState<"form" | "dashboard">("form");
+  const [language, setLanguage] = useState<Language>("en");
+
+  const t = translations[language];
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [view]);
+
+  const toggleLanguage = () => {
+    setLanguage(language === "en" ? "it" : "en");
+  };
 
   return (
     <div className="min-h-screen bg-bg max-w-lg mx-auto relative">
@@ -32,16 +40,30 @@ export default function Home() {
             <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1">
               <Signal size={10} className="text-accent-green" />
               <span className="text-[9px] text-white/80 font-semibold tracking-wider uppercase">
-                TIM Network
+                {t.header.timNetwork}
               </span>
               <span className="w-1.5 h-1.5 rounded-full bg-accent-green animate-pulse" />
             </div>
           </div>
+
+          {/* Language Toggle */}
+          <div className="flex justify-end mb-2">
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 transition-all"
+            >
+              <Globe size={12} className="text-white/70" />
+              <span className="text-[10px] text-white font-bold tracking-wider">
+                {language === "en" ? t.header.languageIt : t.header.languageEn}
+              </span>
+            </button>
+          </div>
+
           <h1 className="text-white text-lg font-bold leading-tight tracking-tight">
-            Network Coverage Feedback
+            {t.header.title}
           </h1>
           <p className="text-white/40 text-[11px] mt-0.5 font-medium">
-            Sales Team — Post-Migration Report
+            {t.header.subtitle}
           </p>
         </div>
 
@@ -56,7 +78,7 @@ export default function Home() {
             }`}
           >
             <ClipboardList size={14} />
-            Submit Report
+            {t.header.submitReport}
             {view === "form" && (
               <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-accent-blue rounded-full" />
             )}
@@ -70,7 +92,7 @@ export default function Home() {
             }`}
           >
             <BarChart3 size={14} />
-            View Results
+            {t.header.viewResults}
             {view === "dashboard" && (
               <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-accent-blue rounded-full" />
             )}
@@ -80,7 +102,11 @@ export default function Home() {
 
       {/* Content */}
       <main className="pt-5 pb-8">
-        {view === "form" ? <FeedbackForm /> : <Dashboard />}
+        {view === "form" ? (
+          <FeedbackForm language={language} />
+        ) : (
+          <Dashboard language={language} />
+        )}
       </main>
 
       {/* Footer */}
@@ -94,10 +120,10 @@ export default function Home() {
           />
         </div>
         <p className="text-[10px] text-slate-300">
-          © {new Date().getFullYear()} Lycamobile Italy — Internal Use Only
+          {t.footer.copyright}
         </p>
         <p className="text-[9px] text-slate-200 mt-0.5">
-          Network Coverage Feedback System v1.0
+          {t.footer.version}
         </p>
       </footer>
     </div>
