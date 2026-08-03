@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Send,
   MapPin,
@@ -107,6 +107,10 @@ export default function FeedbackForm() {
   const [showUserPicker, setShowUserPicker] = useState(false);
 
   const usersByOffice = useMemo(() => getUsersByOffice(), []);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [step, submitted]);
 
   const filteredUsers = useMemo(() => {
     if (!userSearch.trim()) return null;

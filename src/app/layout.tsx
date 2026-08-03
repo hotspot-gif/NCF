@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Sales team network coverage feedback tool for Lycamobile Italy — Post TIM Migration.",
   icons: {
-    icon: "https://cms-assets.ldsvcplatform.com/IT/s3fs-public/2023-09/home_logo.png",
+    icon: "https://cms-assets.ldsvcplatform.com/IT/s3fs-public/2023-09/MicrosoftTeams-image%20%2813%29.png",
   },
 };
 

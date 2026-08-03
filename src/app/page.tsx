@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BarChart3, ClipboardList, Signal } from "lucide-react";
 import FeedbackForm from "@/components/FeedbackForm";
 import Dashboard from "@/components/Dashboard";
 
 export default function Home() {
   const [view, setView] = useState<"form" | "dashboard">("form");
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [view]);
 
   return (
     <div className="min-h-screen bg-bg max-w-lg mx-auto relative">
