@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { BarChart3, ClipboardList, Signal, Globe } from "lucide-react";
+import { BarChart3, ClipboardList, Signal } from "lucide-react";
 import FeedbackForm from "@/components/FeedbackForm";
 import Dashboard from "@/components/Dashboard";
 import { translations, type Language } from "@/data/translations";
@@ -15,10 +15,6 @@ export default function Home() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [view]);
-
-  const toggleLanguage = () => {
-    setLanguage(language === "en" ? "it" : "en");
-  };
 
   return (
     <div className="min-h-screen bg-bg max-w-lg mx-auto relative">
@@ -48,15 +44,28 @@ export default function Home() {
 
           {/* Language Toggle */}
           <div className="flex justify-end mb-2">
-            <button
-              onClick={toggleLanguage}
-              className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 transition-all"
-            >
-              <Globe size={12} className="text-white/70" />
-              <span className="text-[10px] text-white font-bold tracking-wider">
-                {language === "en" ? t.header.languageIt : t.header.languageEn}
-              </span>
-            </button>
+            <div className="flex items-center bg-white/10 backdrop-blur-sm rounded-full p-0.5">
+              <button
+                onClick={() => setLanguage("en")}
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-full transition-all text-[10px] font-bold tracking-wider ${
+                  language === "en"
+                    ? "bg-white text-primary shadow-sm"
+                    : "text-white/50 hover:text-white/80"
+                }`}
+              >
+                EN
+              </button>
+              <button
+                onClick={() => setLanguage("it")}
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-full transition-all text-[10px] font-bold tracking-wider ${
+                  language === "it"
+                    ? "bg-white text-primary shadow-sm"
+                    : "text-white/50 hover:text-white/80"
+                }`}
+              >
+                IT
+              </button>
+            </div>
           </div>
 
           <h1 className="text-white text-lg font-bold leading-tight tracking-tight">
