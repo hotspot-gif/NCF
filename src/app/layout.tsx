@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Lycamobile Italy | Network Coverage Feedback",
+  title: "NCF | Network Coverage Feedback",
   description:
     "Sales team network coverage feedback tool for Lycamobile Italy — Post TIM Migration.",
   icons: {
