@@ -28,8 +28,8 @@ interface FormData {
   postCode: string;
   signalStrength: number;
   dataSpeed: number;
-  downloadSpeed: number;
-  uploadSpeed: number;
+  downloadSpeed: string;
+  uploadSpeed: string;
   speedtestUrl: string;
   callQuality: number;
   smsReliability: number;
@@ -52,8 +52,8 @@ const initialFormData: FormData = {
   postCode: "",
   signalStrength: 0,
   dataSpeed: 0,
-  downloadSpeed: 0,
-  uploadSpeed: 0,
+  downloadSpeed: "",
+  uploadSpeed: "",
   speedtestUrl: "",
   callQuality: 0,
   smsReliability: 0,
@@ -132,8 +132,10 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
   const canProceedStep2 =
     formData.signalStrength > 0 &&
     formData.dataSpeed > 0 &&
-    formData.downloadSpeed > 0 &&
-    formData.uploadSpeed > 0 &&
+    formData.downloadSpeed !== "" &&
+    Number(formData.downloadSpeed) >= 0 &&
+    formData.uploadSpeed !== "" &&
+    Number(formData.uploadSpeed) >= 0 &&
     formData.callQuality > 0 &&
     formData.smsReliability > 0 &&
     formData.networkStability > 0;
@@ -153,10 +155,15 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
     setSubmitting(true);
     setError("");
     try {
+      const payload = {
+        ...formData,
+        downloadSpeed: Number(formData.downloadSpeed),
+        uploadSpeed: Number(formData.uploadSpeed),
+      };
       const res = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
       if (!res.ok) {
         const data = await res.json();
@@ -470,8 +477,8 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
                 </label>
                 <input
                   type="number"
-                  value={formData.downloadSpeed || ""}
-                  onChange={(e) => updateField("downloadSpeed", Number(e.target.value) || 0)}
+                  value={formData.downloadSpeed}
+                  onChange={(e) => updateField("downloadSpeed", e.target.value)}
                   step="0.1"
                   min="0"
                   inputMode="decimal"
@@ -488,8 +495,8 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
                 </label>
                 <input
                   type="number"
-                  value={formData.uploadSpeed || ""}
-                  onChange={(e) => updateField("uploadSpeed", Number(e.target.value) || 0)}
+                  value={formData.uploadSpeed}
+                  onChange={(e) => updateField("uploadSpeed", e.target.value)}
                   step="0.1"
                   min="0"
                   inputMode="decimal"

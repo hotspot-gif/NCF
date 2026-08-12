@@ -3,6 +3,7 @@ import {
   uuid,
   text,
   integer,
+  doublePrecision,
   timestamp,
   boolean,
   varchar,
@@ -24,8 +25,8 @@ export const feedbacks = pgTable("feedbacks", {
   smsReliability: integer("sms_reliability").notNull(),
   networkStability: integer("network_stability").notNull(),
   // Speedtest results
-  downloadSpeed: integer("download_speed").notNull(),
-  uploadSpeed: integer("upload_speed").notNull(),
+  downloadSpeed: doublePrecision("download_speed").notNull(),
+  uploadSpeed: doublePrecision("upload_speed").notNull(),
   speedtestUrl: varchar("speedtest_url", { length: 2048 }).notNull(),
   // Comparison
   overallSatisfaction: integer("overall_satisfaction").notNull(),

@@ -57,13 +57,13 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Validate speed values are positive numbers
+    // Validate speed values are non-negative numbers (allow 0 and decimals)
     const speedFields = ["downloadSpeed", "uploadSpeed"];
     for (const field of speedFields) {
       const val = Number(body[field]);
-      if (isNaN(val) || val <= 0) {
+      if (isNaN(val) || val < 0) {
         return NextResponse.json(
-          { error: `${field} must be a valid positive number` },
+          { error: `${field} must be a valid non-negative number` },
           { status: 400 }
         );
       }
