@@ -3,22 +3,29 @@ import { Pool } from "pg";
 
 const databaseUrl = process.env.DATABASE_URL;
 
-if (!databaseUrl) {
-  throw new Error("https://mubsdaqqaakqrflbojpu.supabase.co");
-}
-
 const globalForDb = globalThis as typeof globalThis & {
   __arenaNextJsPostgresqlPool?: Pool;
+  __arenaNextJsDrizzle?: ReturnType<typeof drizzle>;
 };
 
-export const pool =
-  globalForDb.__arenaNextJsPostgresqlPool ??
-  new Pool({
-    connectionString: databaseUrl,
-  });
+function getPool() {
+  if (!databaseUrl) {
+    throw new Error("DATABASE_URL is not configured.");
+  }
 
-if (process.env.NODE_ENV !== "production") {
-  globalForDb.__arenaNextJsPostgresqlPool = pool;
+  if (!globalForDb.__arenaNextJsPostgresqlPool) {
+    globalForDb.__arenaNextJsPostgresqlPool = new Pool({
+      connectionString: databaseUrl,
+    });
+  }
+
+  return globalForDb.__arenaNextJsPostgresqlPool;
 }
 
-export const db = drizzle(pool);
+export function getDb() {
+  if (!globalForDb.__arenaNextJsDrizzle) {
+    globalForDb.__arenaNextJsDrizzle = drizzle(getPool());
+  }
+
+  return globalForDb.__arenaNextJsDrizzle;
+}

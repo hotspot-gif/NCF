@@ -1,0 +1,3 @@
+module.exports=[71712,a=>{"use strict";var b=a.i(14924);a.s(["default",0,function({children:a}){return(0,b.jsx)("html",{lang:"en",children:(0,b.jsx)("body",{className:"bg-bg text-slate-900 antialiased min-h-screen",children:a})})},"metadata",0,{title:"NCF | Network Coverage Feedback",description:"Sales team network coverage feedback tool for Lycamobile Italy — Post TIM Migration.",icons:{icon:"https://cms-assets.ldsvcplatform.com/IT/s3fs-public/2023-09/MicrosoftTeams-image%20%2813%29.png"}},"viewport",0,{width:"device-width",initialScale:1,maximumScale:1,userScalable:!1,themeColor:"#21264e"}])},9901,a=>{a.n(a.i(71712))}];
+
+//# sourceMappingURL=Downloads_NCF_src_app_layout_tsx_0p4vkpc._.js.map

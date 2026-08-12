@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { feedbacks } from "@/db/schema";
 import { desc } from "drizzle-orm";
 
 export async function POST(request: NextRequest) {
   try {
+    const db = getDb();
     const body = await request.json();
 
     // Validate required fields
@@ -117,6 +118,7 @@ export async function POST(request: NextRequest) {
 
 export async function GET() {
   try {
+    const db = getDb();
     const allFeedbacks = await db
       .select()
       .from(feedbacks)

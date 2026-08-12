@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
-import { db } from "@/db";
+import { getDb } from "@/db";
 import { feedbacks } from "@/db/schema";
 import { sql } from "drizzle-orm";
 
 export async function GET() {
   try {
+    const db = getDb();
     const result = await db
       .select({
         totalResponses: sql<number>`count(*)::int`,
