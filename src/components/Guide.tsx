@@ -13,16 +13,6 @@ export default function Guide({ language }: GuideProps) {
   const [guideType, setGuideType] = useState<"volte" | "manual">("volte");
   const [deviceType, setDeviceType] = useState<"android" | "iphone">("android");
 
-  const renderStepList = (steps: string[]) => (
-    <ol className="list-decimal list-inside space-y-2 text-sm text-slate-600">
-      {steps.map((step, index) => (
-        <li key={index} className="pl-1">
-          {step}
-        </li>
-      ))}
-    </ol>
-  );
-
   const selectedSteps =
     guideType === "volte"
       ? deviceType === "android"
@@ -116,8 +106,12 @@ export default function Guide({ language }: GuideProps) {
         <div className="mt-6 rounded-3xl bg-slate-950 border border-slate-800 p-5 text-white">
           <div className="mb-4 flex items-center justify-between gap-4 rounded-3xl bg-slate-900 p-4">
             <div>
-              <p className="text-[11px] uppercase tracking-[0.24em] text-slate-400">{guideType === "volte" ? t.voLTETitle : t.manualSelectionTitle}</p>
-              <h2 className="text-lg font-semibold">{deviceType === "android" ? t.androidTitle : t.iphoneTitle}</h2>
+              <p className="text-[11px] uppercase tracking-[0.24em] text-slate-400">
+                {guideType === "volte" ? t.voLTETitle : t.manualSelectionTitle}
+              </p>
+              <h2 className="text-lg font-semibold">
+                {deviceType === "android" ? t.androidTitle : t.iphoneTitle}
+              </h2>
             </div>
             <div className="text-xs text-slate-400">{t.selectNetworkLabel}</div>
           </div>
@@ -125,7 +119,13 @@ export default function Guide({ language }: GuideProps) {
           <div className="grid gap-4 md:grid-cols-2">
             <div className="rounded-3xl bg-slate-900 p-4">
               <p className="text-sm text-slate-300 mb-3">{guideSubtitle}</p>
-              {renderStepList(selectedSteps)}
+              <ol className="list-decimal list-inside space-y-3 text-sm text-slate-200">
+                {selectedSteps.map((step, index) => (
+                  <li key={index} className="pl-1">
+                    {step}
+                  </li>
+                ))}
+              </ol>
             </div>
             <div className="rounded-3xl bg-slate-900 p-4">
               <div className="h-full rounded-3xl bg-slate-800 p-4">
@@ -139,33 +139,34 @@ export default function Guide({ language }: GuideProps) {
                     <span className="w-2.5 h-2.5 rounded-full bg-slate-600" />
                   </div>
                 </div>
-                <div className="space-y-3">
-                  {selectedSteps.map((step, index) => (
-                    <div key={index} className="rounded-2xl bg-slate-900 border border-slate-700 p-3">
-                      <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500">Step {index + 1}</p>
-                      <p className="mt-1 text-sm text-slate-200">{step}</p>
-                    </div>
-                  ))}
+                <div className="space-y-3 text-slate-200">
+                  <p className="text-sm leading-relaxed">
+                    {guideType === "volte" ? t.voLTEDescription : t.manualSelectionDescription}
+                  </p>
+                  <div className="rounded-2xl border border-slate-700 bg-slate-900 p-3">
+                    <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500 mb-2">Tip</p>
+                    <p className="text-sm text-slate-300">{t.selectNetworkLabel}</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className="mt-5 rounded-3xl bg-slate-50 p-4 border border-slate-100">
-          <div className="flex items-start gap-2 mb-3">
-            <RefreshCcw size={18} className="text-accent-yellow" />
-            <div>
-              <h3 className="font-semibold text-sm text-primary">{t.notesTitle}</h3>
-              <p className="text-sm text-slate-500 mt-1">{t.voLTEDescription}</p>
+          <div className="mt-5 rounded-3xl bg-slate-50 p-4 border border-slate-100">
+            <div className="flex items-start gap-2 mb-3">
+              <RefreshCcw size={18} className="text-accent-yellow" />
+              <div>
+                <h3 className="font-semibold text-sm text-primary">{t.notesTitle}</h3>
+                <p className="text-sm text-slate-500 mt-1">{t.networkIssueDescription}</p>
+              </div>
             </div>
-          </div>
-          <div className="space-y-2 text-sm text-slate-600">
-            <p>{t.noteRestart}</p>
-            <p>{t.noteVoLTE}</p>
-            <p>{t.noteSamsung}</p>
-            <p>{t.noteApple}</p>
-            <p>{t.noteOtherAndroid}</p>
+            <div className="space-y-2 text-sm text-slate-600">
+              <p>{t.noteRestart}</p>
+              <p>{t.noteVoLTE}</p>
+              <p>{t.noteSamsung}</p>
+              <p>{t.noteApple}</p>
+              <p>{t.noteOtherAndroid}</p>
+            </div>
           </div>
         </div>
       </div>
