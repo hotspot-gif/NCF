@@ -1,13 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { BarChart3, ClipboardList, Signal } from "lucide-react";
+import { BarChart3, ClipboardList, Signal, BookOpen } from "lucide-react";
 import FeedbackForm from "@/components/FeedbackForm";
 import Dashboard from "@/components/Dashboard";
+import Guide from "@/components/Guide";
 import { translations, type Language } from "@/data/translations";
 
 export default function Home() {
-  const [view, setView] = useState<"form" | "dashboard">("form");
+  const [view, setView] = useState<"form" | "dashboard" | "guide">("form");
   const [language, setLanguage] = useState<Language>("en");
 
   const t = translations[language];
@@ -106,6 +107,20 @@ export default function Home() {
               <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-accent-blue rounded-full" />
             )}
           </button>
+          <button
+            onClick={() => setView("guide")}
+            className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-semibold transition-all relative ${
+              view === "guide"
+                ? "bg-bg text-primary"
+                : "text-white/40 hover:text-white/70"
+            }`}
+          >
+            <BookOpen size={14} />
+            {t.header.viewGuide}
+            {view === "guide" && (
+              <span className="absolute bottom-0 left-1/4 right-1/4 h-0.5 bg-accent-blue rounded-full" />
+            )}
+          </button>
         </div>
       </header>
 
@@ -113,8 +128,10 @@ export default function Home() {
       <main className="pt-5 pb-8">
         {view === "form" ? (
           <FeedbackForm language={language} />
-        ) : (
+        ) : view === "dashboard" ? (
           <Dashboard language={language} />
+        ) : (
+          <Guide language={language} />
         )}
       </main>
 

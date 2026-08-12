@@ -91,7 +91,7 @@ export default function SetupGuide() {
           </div>
           <div className="ml-12 space-y-3">
             <p className="text-sm text-slate-600">
-              Run this command to create the <code className="bg-accent-peach/20 px-1.5 py-0.5 rounded text-xs font-mono text-primary">feedbacks</code> table:
+              Run this command to create or update the <code className="bg-accent-peach/20 px-1.5 py-0.5 rounded text-xs font-mono text-primary">feedbacks</code> table:
             </p>
             <div className="bg-primary text-accent-cyan p-4 rounded-xl text-sm font-mono">
               npx drizzle-kit push
@@ -99,6 +99,15 @@ export default function SetupGuide() {
             <p className="text-[13px] text-slate-500">
               This automatically creates all columns defined in <code className="bg-accent-peach/20 px-1 rounded text-xs font-mono text-primary">src/db/schema.ts</code>.
             </p>
+            <p className="text-sm text-slate-600">
+              If you need a raw SQL update instead of schema push, use:
+            </p>
+            <div className="bg-slate-50 text-slate-700 p-4 rounded-xl text-xs font-mono border border-slate-200 overflow-x-auto">
+              ALTER TABLE feedbacks
+              <br />ADD COLUMN download_speed INT NOT NULL,
+              <br />ADD COLUMN upload_speed INT NOT NULL,
+              <br />ADD COLUMN speedtest_url VARCHAR(2048) NOT NULL;
+            </div>
           </div>
         </section>
 
@@ -135,6 +144,9 @@ export default function SetupGuide() {
                     ["call_quality", "INT", "Rating 1-5"],
                     ["sms_reliability", "INT", "Rating 1-5"],
                     ["network_stability", "INT", "Rating 1-5"],
+                    ["download_speed", "INT", "Speedtest download rating 1-5"],
+                    ["upload_speed", "INT", "Speedtest upload rating 1-5"],
+                    ["speedtest_url", "VARCHAR(2048)", "Speedtest result URL"],
                     ["overall_satisfaction", "INT", "Rating 1-5"],
                     ["compared_to_before", "VARCHAR", "Migration comparison"],
                     ["primary_issue", "VARCHAR", "Main issue (optional)"],

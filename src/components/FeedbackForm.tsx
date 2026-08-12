@@ -28,6 +28,9 @@ interface FormData {
   postCode: string;
   signalStrength: number;
   dataSpeed: number;
+  downloadSpeed: number;
+  uploadSpeed: number;
+  speedtestUrl: string;
   callQuality: number;
   smsReliability: number;
   networkStability: number;
@@ -49,6 +52,9 @@ const initialFormData: FormData = {
   postCode: "",
   signalStrength: 0,
   dataSpeed: 0,
+  downloadSpeed: 0,
+  uploadSpeed: 0,
+  speedtestUrl: "",
   callQuality: 0,
   smsReliability: 0,
   networkStability: 0,
@@ -126,6 +132,8 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
   const canProceedStep2 =
     formData.signalStrength > 0 &&
     formData.dataSpeed > 0 &&
+    formData.downloadSpeed > 0 &&
+    formData.uploadSpeed > 0 &&
     formData.callQuality > 0 &&
     formData.smsReliability > 0 &&
     formData.networkStability > 0;
@@ -455,6 +463,32 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
               onChange={(v) => updateField("dataSpeed", v)}
               ratingLabels={tf.ratingLabels}
             />
+            <StarRating
+              label={tf.downloadSpeed}
+              description={tf.downloadSpeedDesc}
+              value={formData.downloadSpeed}
+              onChange={(v) => updateField("downloadSpeed", v)}
+              ratingLabels={tf.ratingLabels}
+            />
+            <StarRating
+              label={tf.uploadSpeed}
+              description={tf.uploadSpeedDesc}
+              value={formData.uploadSpeed}
+              onChange={(v) => updateField("uploadSpeed", v)}
+              ratingLabels={tf.ratingLabels}
+            />
+            <div className="mb-5">
+              <label className="block text-sm font-semibold text-primary mb-0.5">
+                {tf.speedtestUrl}
+              </label>
+              <input
+                type="url"
+                value={formData.speedtestUrl}
+                onChange={(e) => updateField("speedtestUrl", e.target.value)}
+                placeholder={tf.speedtestUrlPlaceholder}
+                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all"
+              />
+            </div>
             <StarRating
               label={tf.callQuality}
               description={tf.callQualityDesc}

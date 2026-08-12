@@ -20,6 +20,9 @@ export async function POST(request: NextRequest) {
       "callQuality",
       "smsReliability",
       "networkStability",
+      "downloadSpeed",
+      "uploadSpeed",
+      "speedtestUrl",
       "overallSatisfaction",
       "comparedToBefore",
     ];
@@ -40,6 +43,8 @@ export async function POST(request: NextRequest) {
       "callQuality",
       "smsReliability",
       "networkStability",
+      "downloadSpeed",
+      "uploadSpeed",
       "overallSatisfaction",
     ];
 
@@ -51,6 +56,13 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
       }
+    }
+
+    if (typeof body.speedtestUrl !== "string" || !body.speedtestUrl.trim()) {
+      return NextResponse.json(
+        { error: "speedtestUrl must be a valid URL string" },
+        { status: 400 }
+      );
     }
 
     const newFeedback = await db
@@ -67,6 +79,9 @@ export async function POST(request: NextRequest) {
         callQuality: Number(body.callQuality),
         smsReliability: Number(body.smsReliability),
         networkStability: Number(body.networkStability),
+        downloadSpeed: Number(body.downloadSpeed),
+        uploadSpeed: Number(body.uploadSpeed),
+        speedtestUrl: body.speedtestUrl.trim(),
         overallSatisfaction: Number(body.overallSatisfaction),
         comparedToBefore: body.comparedToBefore,
         primaryIssue: body.primaryIssue || null,

@@ -11,6 +11,7 @@ export interface Translations {
     subtitle: string;
     submitReport: string;
     viewResults: string;
+    viewGuide: string;
     languageEn: string;
     languageIt: string;
   };
@@ -42,6 +43,12 @@ export interface Translations {
     signalStrengthDesc: string;
     dataSpeed: string;
     dataSpeedDesc: string;
+    downloadSpeed: string;
+    downloadSpeedDesc: string;
+    uploadSpeed: string;
+    uploadSpeedDesc: string;
+    speedtestUrl: string;
+    speedtestUrlPlaceholder: string;
     callQuality: string;
     callQualityDesc: string;
     smsReliability: string;
@@ -115,6 +122,29 @@ export interface Translations {
       muchWorse: string;
     };
   };
+  guide: {
+    title: string;
+    subtitle: string;
+    networkIssueTitle: string;
+    networkIssueDescription: string;
+    voLTETitle: string;
+    voLTEDescription: string;
+    manualSelectionTitle: string;
+    manualSelectionDescription: string;
+    androidTitle: string;
+    androidVoLTESteps: string[];
+    androidManualSelectionSteps: string[];
+    iphoneTitle: string;
+    iphoneVoLTESteps: string[];
+    iphoneManualSelectionSteps: string[];
+    notesTitle: string;
+    noteRestart: string;
+    noteVoLTE: string;
+    noteSamsung: string;
+    noteApple: string;
+    noteOtherAndroid: string;
+    selectNetworkLabel: string;
+  };
 }
 
 export const translations: Record<Language, Translations> = {
@@ -129,6 +159,7 @@ export const translations: Record<Language, Translations> = {
       subtitle: "Sales Team — Post-Migration Report",
       submitReport: "Submit Report",
       viewResults: "View Results",
+      viewGuide: "Troubleshooting Guide",
       languageEn: "EN",
       languageIt: "IT",
     },
@@ -160,6 +191,12 @@ export const translations: Record<Language, Translations> = {
       signalStrengthDesc: "Overall mobile signal reception in your area",
       dataSpeed: "🌐 Data Speed",
       dataSpeedDesc: "4G/LTE internet speed performance",
+      downloadSpeed: "⬇️ Download Speed",
+      downloadSpeedDesc: "Measured download throughput from speedtest results",
+      uploadSpeed: "⬆️ Upload Speed",
+      uploadSpeedDesc: "Measured upload throughput from speedtest results",
+      speedtestUrl: "Speedtest Result URL",
+      speedtestUrlPlaceholder: "Paste the Speedtest result link here",
       callQuality: "📞 Call Quality",
       callQualityDesc: "Voice clarity and call connection reliability",
       smsReliability: "💬 SMS Reliability",
@@ -251,6 +288,47 @@ export const translations: Record<Language, Translations> = {
         muchWorse: "Much Worse",
       },
     },
+    guide: {
+      title: "Post-Migration Network Troubleshooting",
+      subtitle: "Use this guide to enable VoLTE and select the correct network on Android and iPhone.",
+      networkIssueTitle: "Known Post-Migration Issue",
+      networkIssueDescription: "If voice stops working while mobile data still works, follow the steps below to restore voice connectivity.",
+      voLTETitle: "How to enable VoLTE",
+      voLTEDescription: "Enable VoLTE first, then restart the device to refresh voice services.",
+      manualSelectionTitle: "Manual Network Selection",
+      manualSelectionDescription: "Use manual network selection to choose Lycamobile or TIM when automatic registration fails.",
+      androidTitle: "Android Guide",
+      androidVoLTESteps: [
+        "Open Settings → Connections → Mobile networks → VoLTE calls.",
+        "Enable the VoLTE calls toggle.",
+        "If the device does not show a VoLTE toggle, Samsung auto-configures it on newer models.",
+        "Restart the device after enabling VoLTE.",
+      ],
+      androidManualSelectionSteps: [
+        "Open Settings → Connections → Mobile networks → Network operators.",
+        "Disable Automatic network selection.",
+        "Wait for the network list to refresh.",
+        "Select Lycamobile or TIM from the available operators.",
+      ],
+      iphoneTitle: "iPhone Guide",
+      iphoneVoLTESteps: [
+        "Open Settings → Cellular → Cellular Data Options → Voice & Data.",
+        "Set Voice & Data to LTE or VoLTE.",
+        "If needed, restart the iPhone.",
+      ],
+      iphoneManualSelectionSteps: [
+        "Open Settings → Cellular → Network Selection.",
+        "Turn off Automatic.",
+        "Choose Lycamobile or TIM from the list.",
+      ],
+      notesTitle: "If data works but voice does not",
+      noteRestart: "1. Enable VoLTE on the handset.",
+      noteVoLTE: "2. Restart the device.",
+      noteSamsung: "New generation Samsung devices: VoLTE is auto-configured; no toggle may be visible.",
+      noteApple: "Apple devices: Manual VoLTE enabling is required.",
+      noteOtherAndroid: "Other Android devices: Manual VoLTE enabling is required.",
+      selectNetworkLabel: "Select Lycamobile or TIM",
+    },
   },
   it: {
     common: {
@@ -263,6 +341,7 @@ export const translations: Record<Language, Translations> = {
       subtitle: "Team Vendite — Rapporto Post-Migrazione",
       submitReport: "Invia Rapporto",
       viewResults: "Vedi Risultati",
+      viewGuide: "Guida Risoluzione",
       languageEn: "EN",
       languageIt: "IT",
     },
@@ -294,6 +373,12 @@ export const translations: Record<Language, Translations> = {
       signalStrengthDesc: "Ricezione generale del segnale mobile nella tua zona",
       dataSpeed: "🌐 Velocità Dati",
       dataSpeedDesc: "Prestazioni della velocità internet 4G/LTE",
+      downloadSpeed: "⬇️ Velocità di Download",
+      downloadSpeedDesc: "Velocità di download misurata dai risultati Speedtest",
+      uploadSpeed: "⬆️ Velocità di Upload",
+      uploadSpeedDesc: "Velocità di upload misurata dai risultati Speedtest",
+      speedtestUrl: "URL Risultato Speedtest",
+      speedtestUrlPlaceholder: "Incolla qui il link del risultato Speedtest",
       callQuality: "📞 Qualità Chiamate",
       callQualityDesc: "Chiarezza vocale e affidabilità della connessione chiamata",
       smsReliability: "💬 Affidabilità SMS",
@@ -384,6 +469,47 @@ export const translations: Record<Language, Translations> = {
         worse: "Peggiore",
         muchWorse: "Molto Peggiore",
       },
+    },
+    guide: {
+      title: "Guida Risoluzione Problemi Post-Migrazione",
+      subtitle: "Usa questa guida per abilitare VoLTE e selezionare la rete corretta su Android e iPhone.",
+      networkIssueTitle: "Problema Conosciuto Dopo la Migrazione",
+      networkIssueDescription: "Se la voce non funziona mentre i dati mobili funzionano, segui i passaggi qui sotto per ripristinare i servizi vocali.",
+      voLTETitle: "Come abilitare VoLTE",
+      voLTEDescription: "Abilita prima VoLTE, poi riavvia il dispositivo per aggiornare i servizi vocali.",
+      manualSelectionTitle: "Selezione Manuale della Rete",
+      manualSelectionDescription: "Usa la selezione manuale rete per scegliere Lycamobile o TIM quando la registrazione automatica fallisce.",
+      androidTitle: "Guida Android",
+      androidVoLTESteps: [
+        "Apri Impostazioni → Connessioni → Reti mobili → Chiamate VoLTE.",
+        "Attiva il toggle Chiamate VoLTE.",
+        "Se il dispositivo non mostra il toggle, Samsung lo auto-configura sui modelli più recenti.",
+        "Riavvia il dispositivo dopo aver abilitato VoLTE.",
+      ],
+      androidManualSelectionSteps: [
+        "Apri Impostazioni → Connessioni → Reti mobili → Operatori di rete.",
+        "Disattiva Selezione automatica rete.",
+        "Attendi l'aggiornamento dell'elenco delle reti.",
+        "Seleziona Lycamobile o TIM dall'elenco.",
+      ],
+      iphoneTitle: "Guida iPhone",
+      iphoneVoLTESteps: [
+        "Apri Impostazioni → Cellulare → Opzioni dati cellulare → Voce e dati.",
+        "Imposta Voce e dati su LTE o VoLTE.",
+        "Se necessario, riavvia l'iPhone.",
+      ],
+      iphoneManualSelectionSteps: [
+        "Apri Impostazioni → Cellulare → Selezione rete.",
+        "Disattiva Automatico.",
+        "Scegli Lycamobile o TIM dall'elenco.",
+      ],
+      notesTitle: "Se i dati funzionano ma la voce no",
+      noteRestart: "1. Abilita VoLTE sul dispositivo.",
+      noteVoLTE: "2. Riavvia il dispositivo.",
+      noteSamsung: "Nuovi dispositivi Samsung: VoLTE è auto-configurato; il toggle potrebbe non essere visibile.",
+      noteApple: "Dispositivi Apple: è richiesta l'abilitazione manuale di VoLTE.",
+      noteOtherAndroid: "Altri dispositivi Android: è richiesta l'abilitazione manuale di VoLTE.",
+      selectNetworkLabel: "Seleziona Lycamobile o TIM",
     },
   },
 };
