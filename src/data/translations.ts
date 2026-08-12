@@ -47,6 +47,8 @@ export interface Translations {
     downloadSpeedDesc: string;
     uploadSpeed: string;
     uploadSpeedDesc: string;
+    downloadSpeedPlaceholder: string;
+    uploadSpeedPlaceholder: string;
     speedtestUrl: string;
     speedtestUrlPlaceholder: string;
     callQuality: string;
@@ -195,6 +197,8 @@ export const translations: Record<Language, Translations> = {
       downloadSpeedDesc: "Measured download throughput from speedtest results",
       uploadSpeed: "⬆️ Upload Speed",
       uploadSpeedDesc: "Measured upload throughput from speedtest results",
+      downloadSpeedPlaceholder: "Enter download speed in Mbps",
+      uploadSpeedPlaceholder: "Enter upload speed in Mbps",
       speedtestUrl: "Speedtest Result URL",
       speedtestUrlPlaceholder: "Paste the Speedtest result link here",
       callQuality: "📞 Call Quality",
@@ -377,6 +381,8 @@ export const translations: Record<Language, Translations> = {
       downloadSpeedDesc: "Velocità di download misurata dai risultati Speedtest",
       uploadSpeed: "⬆️ Velocità di Upload",
       uploadSpeedDesc: "Velocità di upload misurata dai risultati Speedtest",
+      downloadSpeedPlaceholder: "Inserisci la velocità di download in Mbps",
+      uploadSpeedPlaceholder: "Inserisci la velocità di upload in Mbps",
       speedtestUrl: "URL Risultato Speedtest",
       speedtestUrlPlaceholder: "Incolla qui il link del risultato Speedtest",
       callQuality: "📞 Qualità Chiamate",

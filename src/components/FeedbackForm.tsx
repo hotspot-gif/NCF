@@ -463,20 +463,44 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
               onChange={(v) => updateField("dataSpeed", v)}
               ratingLabels={tf.ratingLabels}
             />
-            <StarRating
-              label={tf.downloadSpeed}
-              description={tf.downloadSpeedDesc}
-              value={formData.downloadSpeed}
-              onChange={(v) => updateField("downloadSpeed", v)}
-              ratingLabels={tf.ratingLabels}
-            />
-            <StarRating
-              label={tf.uploadSpeed}
-              description={tf.uploadSpeedDesc}
-              value={formData.uploadSpeed}
-              onChange={(v) => updateField("uploadSpeed", v)}
-              ratingLabels={tf.ratingLabels}
-            />
+            <div className="grid gap-4 lg:grid-cols-2">
+              <div>
+                <label className="block text-sm font-semibold text-primary mb-0.5">
+                  {tf.downloadSpeed}
+                </label>
+                <input
+                  type="number"
+                  value={formData.downloadSpeed || ""}
+                  onChange={(e) => updateField("downloadSpeed", Number(e.target.value) || 0)}
+                  step="0.1"
+                  min="0"
+                  inputMode="decimal"
+                  placeholder={tf.downloadSpeedPlaceholder}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all"
+                />
+                <p className="text-[11px] text-slate-400 mt-2">
+                  {tf.downloadSpeedDesc}
+                </p>
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-primary mb-0.5">
+                  {tf.uploadSpeed}
+                </label>
+                <input
+                  type="number"
+                  value={formData.uploadSpeed || ""}
+                  onChange={(e) => updateField("uploadSpeed", Number(e.target.value) || 0)}
+                  step="0.1"
+                  min="0"
+                  inputMode="decimal"
+                  placeholder={tf.uploadSpeedPlaceholder}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all"
+                />
+                <p className="text-[11px] text-slate-400 mt-2">
+                  {tf.uploadSpeedDesc}
+                </p>
+              </div>
+            </div>
             <div className="mb-5">
               <label className="block text-sm font-semibold text-primary mb-0.5">
                 {tf.speedtestUrl}
