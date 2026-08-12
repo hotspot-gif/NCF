@@ -35,16 +35,16 @@ const IPhoneMockup: React.FC<IPhoneMockupProps> = ({ step }) => {
     return (
       <div className="flex flex-col h-full bg-[#F2F2F7]">
         {/* iOS Nav Bar */}
-        <div className="bg-[#F2F2F7] px-4 pt-2 pb-1">
+        <div className="bg-[#F2F2F7] px-4 py-3 pb-2 relative z-10">
           {screen.backLabel && (
-            <button className="flex items-center gap-1 text-[#245bc1] text-sm font-medium mb-1">
+            <button className="flex items-center gap-1 text-[#245bc1] text-sm font-medium mb-2">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
               </svg>
               {screen.backLabel}
             </button>
           )}
-          <h2 className="text-[17px] font-semibold text-[#1c1c1e] text-center -mt-5">
+          <h2 className="text-[17px] font-semibold text-[#1c1c1e] text-center">
             {screen.title}
           </h2>
         </div>
@@ -143,12 +143,17 @@ const IPhoneMockup: React.FC<IPhoneMockupProps> = ({ step }) => {
                 >
                   <div className="flex items-center gap-3">
                     {isHighlighted && (
-                      <span className="text-lg">
-                        {item.label === 'Cellular' ? '📶' :
-                         item.label === 'Network Selection' ? '📡' :
-                         item.label === 'Cellular Data Options' ? '⚙️' :
-                         item.label === 'Wi-Fi' ? '📶' : ''}
-                      </span>
+                      <svg className="w-5 h-5 text-[#245bc1] flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                        {item.label === 'Cellular' || item.label === 'Wi-Fi' ? (
+                          <path d="M1.75 8.5C4.5 5.7 8.05 4 12 4s7.5 1.7 10.25 4.5L20.5 10.25C18.2 7.95 15.25 6.5 12 6.5S5.8 7.95 3.5 10.25L1.75 8.5zm5 5C8.1 12.1 9.95 11.25 12 11.25s3.9.85 5.25 2.25L18.75 12c-1.8-1.85-4.3-3-6.75-3S5.05 10.15 3.25 12l1.5 1.5zm3.5 3.5c.75-.75 1.75-1.25 2.75-1.25s2 .5 2.75 1.25L12 20l-1.75-2.5z" />
+                        ) : item.label === 'Network Selection' ? (
+                          <path d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                        ) : item.label === 'Cellular Data Options' ? (
+                          <path d="M12 6V4m0 2a2 2 0 100 4 2 2 0 000-4zm0 0C6.477 6 2 9.134 2 13c0 1.059.169 2.079.504 3.051M12 6c5.523 0 10 3.134 10 7 0 1.059-.169 2.079-.504 3.051M12 6l-.001.001M12 6l.001.001m0 0c-3.579 0-6.707 2.146-6.707 4.793 0 1.236.27 2.519.763 3.626m5.944-.827c1.256.861 2.888 1.201 4.514 1.201 3.579 0 6.707-2.146 6.707-4.793 0-1.236-.27-2.519-.763-3.626" />
+                        ) : (
+                          <path d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                        )}
+                      </svg>
                     )}
                     <div>
                       <p className={`text-[14px] ${isHighlighted ? 'text-[#245bc1] font-semibold' : 'text-[#1c1c1e]'}`}>

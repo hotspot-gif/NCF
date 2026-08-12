@@ -98,12 +98,11 @@ const VoLTEGuide: React.FC = () => {
             }`}
             style={selectedBrand.id === 'ios' ? { background: '#EEF4FF' } : {}}
           >
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-sm flex-shrink-0"
-              style={{ background: selectedBrand.id === 'ios' ? '#245bc1' : '#f0f0f0' }}
-            >
-              🍎
-            </div>
+            <img
+              src="https://www.freepnglogos.com/uploads/apple-logo-png/apple-logo-logo-icons-31.png"
+              alt="iPhone"
+              className="w-10 h-10 object-contain flex-shrink-0"
+            />
             <div className="text-left flex-1">
               <p className={`font-bold text-sm ${selectedBrand.id === 'ios' ? 'text-[#245bc1]' : 'text-gray-700'}`}>
                 iPhone (iOS)
@@ -140,12 +139,14 @@ const VoLTEGuide: React.FC = () => {
                   }`}
                   style={isSelected ? { background: '#EAFFF6' } : {}}
                 >
-                  <div
-                    className="w-8 h-8 rounded-xl flex items-center justify-center text-base flex-shrink-0"
-                    style={{ background: isSelected ? '#08dc7d' : '#f0f0f0' }}
+                  <svg
+                    className="w-8 h-8 flex-shrink-0"
+                    fill={isSelected ? '#08dc7d' : '#f0f0f0'}
+                    viewBox="0 0 24 24"
+                    stroke="none"
                   >
-                    📱
-                  </div>
+                    <path d="M17 2H7c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 16H7V4h10v14z" />
+                  </svg>
                   <div>
                     <p className={`font-semibold text-xs leading-tight ${isSelected ? 'text-[#08dc7d]' : 'text-gray-700'}`}>
                       {brand.name.split(' /')[0].split(' –')[0]}
@@ -231,7 +232,7 @@ const VoLTEGuide: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-xl font-black text-[#21264e] mb-1">VoLTE Enabled! 🎉</h3>
+            <h3 className="text-xl font-black text-[#21264e] mb-1">VoLTE Enabled! ✓</h3>
             <p className="text-gray-600 text-sm mb-3">
               You can now make HD quality calls on your {selectedBrand.name}.
             </p>
@@ -298,7 +299,7 @@ const VoLTEGuide: React.FC = () => {
                   style={{ background: accentColor }}
                 >
                   <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
                   </svg>
                 </div>
                 <div>
@@ -319,7 +320,9 @@ const VoLTEGuide: React.FC = () => {
                   className="mt-3 flex items-center gap-2 p-3 rounded-xl"
                   style={{ background: '#FFFBEB', border: '1px solid #FFDD64' }}
                 >
-                  <span className="text-[#FFDD64] font-bold">👆</span>
+                  <svg className="w-5 h-5 text-[#FFDD64] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4" />
+                  </svg>
                   <p className="text-xs font-semibold text-gray-700">
                     Tap: <span style={{ color: accentColor }}>{selectedBrand.steps[currentStep].highlight}</span>
                   </p>
@@ -433,7 +436,9 @@ const VoLTEVerification: React.FC = () => (
         className="p-3 rounded-xl flex items-start gap-3"
         style={{ background: '#EEF4FF' }}
       >
-        <span className="text-xl">①</span>
+        <div className="flex items-center justify-center w-6 h-6 bg-[#245bc1] text-white rounded font-bold text-xs mt-0.5">
+          1
+        </div>
         <div>
           <p className="font-bold text-sm text-[#21264e]">Check the status bar</p>
           <p className="text-xs text-gray-500 mt-0.5">During a call, you should see:</p>
@@ -454,7 +459,9 @@ const VoLTEVerification: React.FC = () => (
         className="p-3 rounded-xl flex items-start gap-3"
         style={{ background: '#EAFFF6' }}
       >
-        <span className="text-xl">②</span>
+        <div className="flex items-center justify-center w-6 h-6 bg-[#08dc7d] text-white rounded font-bold text-xs mt-0.5">
+          2
+        </div>
         <div>
           <p className="font-bold text-sm text-[#21264e]">Make a test call</p>
           <p className="text-xs text-gray-500 mt-0.5">

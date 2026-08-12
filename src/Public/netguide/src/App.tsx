@@ -18,28 +18,20 @@ const App: React.FC = () => {
           <div className="flex items-center justify-between mb-4">
             {/* Lycamobile Logo */}
             <div className="flex items-center gap-2">
-              <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-lg"
-                style={{ background: 'linear-gradient(135deg, #08dc7d, #00c46a)' }}
-              >
-                <svg viewBox="0 0 24 24" className="w-5 h-5 fill-white">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" />
-                </svg>
-              </div>
-              <div className="flex items-baseline gap-0.5">
-                <span className="text-white font-black text-[18px] tracking-tight">Lyca</span>
-                <span className="font-black text-[18px] tracking-tight" style={{ color: '#08dc7d' }}>Mobile</span>
-              </div>
+              <img
+                src="https://cms-assets.ldsvcplatform.com/IT/s3fs-public/inline-images/logo_new1.png"
+                alt="Lycamobile"
+                className="h-8 object-contain"
+              />
             </div>
 
             {/* TIM Logo */}
             <div className="flex items-center gap-1.5 bg-white rounded-xl px-3 py-2 shadow-lg">
-              <div className="grid grid-cols-3 gap-[3px]">
-                {Array(9).fill(0).map((_, i) => (
-                  <div key={i} className="w-1.5 h-1.5 rounded-[2px]" style={{ background: '#e30613' }} />
-                ))}
-              </div>
-              <span className="text-[#1a1a1a] font-black text-sm ml-0.5">TIM</span>
+              <img
+                src="https://risorsec.tim.it/content/dam/flytoco-areapubblica-aemfe/tim_it/img/temi/2025/logo_0033A1.png"
+                alt="TIM"
+                className="h-6 object-contain"
+              />
             </div>
           </div>
 

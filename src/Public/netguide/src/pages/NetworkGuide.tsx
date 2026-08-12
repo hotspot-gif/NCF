@@ -97,12 +97,11 @@ const NetworkGuide: React.FC = () => {
             }`}
             style={platform === 'ios' ? { background: '#EEF4FF' } : {}}
           >
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-sm"
-              style={{ background: platform === 'ios' ? '#245bc1' : '#f0f0f0' }}
-            >
-              <span>🍎</span>
-            </div>
+            <img
+              src="https://www.freepnglogos.com/uploads/apple-logo-png/apple-logo-logo-icons-31.png"
+              alt="iPhone"
+              className="w-10 h-10 object-contain"
+            />
             <div className="text-left">
               <p className={`font-bold text-sm ${platform === 'ios' ? 'text-[#245bc1]' : 'text-gray-700'}`}>iPhone</p>
               <p className="text-xs text-gray-400">iOS</p>
@@ -125,12 +124,11 @@ const NetworkGuide: React.FC = () => {
             }`}
             style={platform === 'android' ? { background: '#EAFFF6' } : {}}
           >
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shadow-sm"
-              style={{ background: platform === 'android' ? '#08dc7d' : '#f0f0f0' }}
-            >
-              <span>🤖</span>
-            </div>
+            <img
+              src="https://www.freepnglogos.com/uploads/android-logo-png/android-logo-transparent-png-svg-vector-2.png"
+              alt="Android"
+              className="w-10 h-10 object-contain"
+            />
             <div className="text-left">
               <p className={`font-bold text-sm ${platform === 'android' ? 'text-[#1a9e5c]' : 'text-gray-700'}`}>Android</p>
               <p className="text-xs text-gray-400">All brands</p>
@@ -183,7 +181,7 @@ const NetworkGuide: React.FC = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h3 className="text-xl font-black text-[#21264e] mb-2">Connected to TIM! 🎉</h3>
+            <h3 className="text-xl font-black text-[#21264e] mb-2">Connected to TIM! ✓</h3>
             <p className="text-gray-600 text-sm">Your device is now manually connected to the TIM network via Lycamobile.</p>
           </div>
 
