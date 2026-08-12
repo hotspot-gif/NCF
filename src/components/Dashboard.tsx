@@ -18,6 +18,9 @@ import {
   MapPin,
   Clock,
   AlertTriangle,
+  ArrowDown,
+  ArrowUp,
+  Gauge,
 } from "lucide-react";
 import { translations, type Language } from "@/data/translations";
 
@@ -29,6 +32,12 @@ interface Stats {
   avgSmsReliability: number;
   avgNetworkStability: number;
   avgOverallSatisfaction: number;
+  avgDownloadSpeed: number;
+  avgUploadSpeed: number;
+  maxDownloadSpeed: number;
+  maxUploadSpeed: number;
+  minDownloadSpeed: number;
+  minUploadSpeed: number;
 }
 
 interface FeedbackItem {
@@ -41,6 +50,8 @@ interface FeedbackItem {
   postCode: string | null;
   signalStrength: number;
   dataSpeed: number;
+  downloadSpeed: number;
+  uploadSpeed: number;
   callQuality: number;
   smsReliability: number;
   networkStability: number;
@@ -234,6 +245,121 @@ export default function Dashboard({ language }: DashboardProps) {
         </div>
       )}
 
+      {/* Speed Analysis Chart */}
+      {stats && stats.totalResponses > 0 && (
+        <div className="px-4 mb-5">
+          <div className="bg-bg-card rounded-2xl p-5 shadow-sm border border-accent-peach/30">
+            <h3 className="font-bold text-primary mb-1 flex items-center gap-2 text-[15px]">
+              <Gauge size={16} className="text-accent-cyan" />
+              {td.speedAnalysis}
+            </h3>
+            <p className="text-[10px] text-slate-400 mb-4 ml-6">
+              {td.speedAnalysisSubtitle}
+            </p>
+
+            {/* Bar Chart */}
+            <div className="flex items-end justify-around gap-4 px-2 pt-2 pb-1 h-48">
+              {/* Avg Download */}
+              <div className="flex flex-col items-center flex-1">
+                <span className="text-[11px] font-bold text-primary mb-1">
+                  {Number(stats.avgDownloadSpeed).toFixed(1)}
+                </span>
+                <div className="w-full max-w-[70px] bg-accent-blue/10 rounded-t-xl flex items-end justify-center overflow-hidden" style={{ height: "120px" }}>
+                  <div
+                    className="w-full bg-gradient-to-t from-accent-blue to-accent-cyan rounded-t-xl transition-all duration-1000"
+                    style={{ height: `${Math.min((Number(stats.avgDownloadSpeed) / Math.max(Number(stats.maxDownloadSpeed), 1)) * 100, 100)}%` }}
+                  />
+                </div>
+                <span className="text-[9px] text-slate-400 mt-1.5 font-medium uppercase tracking-wide">
+                  {td.avgDownloadSpeed}
+                </span>
+              </div>
+
+              {/* Avg Upload */}
+              <div className="flex flex-col items-center flex-1">
+                <span className="text-[11px] font-bold text-primary mb-1">
+                  {Number(stats.avgUploadSpeed).toFixed(1)}
+                </span>
+                <div className="w-full max-w-[70px] bg-accent-purple/10 rounded-t-xl flex items-end justify-center overflow-hidden" style={{ height: "120px" }}>
+                  <div
+                    className="w-full bg-gradient-to-t from-accent-purple to-accent-peach rounded-t-xl transition-all duration-1000"
+                    style={{ height: `${Math.min((Number(stats.avgUploadSpeed) / Math.max(Number(stats.maxUploadSpeed), 1)) * 100, 100)}%` }}
+                  />
+                </div>
+                <span className="text-[9px] text-slate-400 mt-1.5 font-medium uppercase tracking-wide">
+                  {td.avgUploadSpeed}
+                </span>
+              </div>
+
+              {/* Max Download */}
+              <div className="flex flex-col items-center flex-1">
+                <span className="text-[11px] font-bold text-primary mb-1">
+                  {Number(stats.maxDownloadSpeed).toFixed(1)}
+                </span>
+                <div className="w-full max-w-[70px] bg-accent-blue/10 rounded-t-xl flex items-end justify-center overflow-hidden" style={{ height: "120px" }}>
+                  <div
+                    className="w-full bg-gradient-to-t from-accent-blue to-accent-cyan rounded-t-xl transition-all duration-1000"
+                    style={{ height: `${Math.min((Number(stats.maxDownloadSpeed) / Math.max(Number(stats.maxDownloadSpeed), 1)) * 100, 100)}%` }}
+                  />
+                </div>
+                <span className="text-[9px] text-slate-400 mt-1.5 font-medium uppercase tracking-wide">
+                  {td.maxDownloadSpeed}
+                </span>
+              </div>
+
+              {/* Max Upload */}
+              <div className="flex flex-col items-center flex-1">
+                <span className="text-[11px] font-bold text-primary mb-1">
+                  {Number(stats.maxUploadSpeed).toFixed(1)}
+                </span>
+                <div className="w-full max-w-[70px] bg-accent-purple/10 rounded-t-xl flex items-end justify-center overflow-hidden" style={{ height: "120px" }}>
+                  <div
+                    className="w-full bg-gradient-to-t from-accent-purple to-accent-peach rounded-t-xl transition-all duration-1000"
+                    style={{ height: `${Math.min((Number(stats.maxUploadSpeed) / Math.max(Number(stats.maxDownloadSpeed), 1)) * 100, 100)}%` }}
+                  />
+                </div>
+                <span className="text-[9px] text-slate-400 mt-1.5 font-medium uppercase tracking-wide">
+                  {td.maxUploadSpeed}
+                </span>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="flex items-center justify-center gap-4 mt-3 pt-3 border-t border-slate-100">
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-sm bg-gradient-to-t from-accent-blue to-accent-cyan" />
+                <span className="text-[10px] text-slate-500 font-medium">{td.download}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-sm bg-gradient-to-t from-accent-purple to-accent-peach" />
+                <span className="text-[10px] text-slate-500 font-medium">{td.upload}</span>
+              </div>
+              <span className="text-[10px] text-slate-300 font-medium">({td.mbps})</span>
+            </div>
+
+            {/* Min/Max summary */}
+            <div className="grid grid-cols-2 gap-2 mt-4">
+              <div className="bg-accent-blue/5 rounded-xl p-3">
+                <p className="text-[9px] text-slate-400 uppercase tracking-wide font-medium mb-0.5">
+                  {td.minDownloadSpeed}
+                </p>
+                <p className="text-sm font-bold text-primary">
+                  {Number(stats.minDownloadSpeed).toFixed(1)} <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
+                </p>
+              </div>
+              <div className="bg-accent-purple/5 rounded-xl p-3">
+                <p className="text-[9px] text-slate-400 uppercase tracking-wide font-medium mb-0.5">
+                  {td.minUploadSpeed}
+                </p>
+                <p className="text-sm font-bold text-primary">
+                  {Number(stats.minUploadSpeed).toFixed(1)} <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Recent Feedbacks */}
       <div className="px-4">
         <h3 className="font-bold text-primary mb-3 flex items-center gap-2 text-[15px]">
@@ -335,6 +461,32 @@ export default function Dashboard({ language }: DashboardProps) {
                         </span>
                       </div>
                     ))}
+                  </div>
+
+                  {/* Speed details */}
+                  <div className="grid grid-cols-2 gap-1.5 mb-3">
+                    <div className="flex items-center gap-2 bg-accent-blue/5 rounded-xl px-3 py-2">
+                      <ArrowDown size={12} className="text-accent-blue shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[8px] text-slate-400 uppercase tracking-wider font-medium">
+                          {td.download}
+                        </p>
+                        <p className="text-[13px] font-bold text-primary leading-tight">
+                          {Number(fb.downloadSpeed).toFixed(1)} <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 bg-accent-purple/5 rounded-xl px-3 py-2">
+                      <ArrowUp size={12} className="text-accent-purple shrink-0" />
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[8px] text-slate-400 uppercase tracking-wider font-medium">
+                          {td.upload}
+                        </p>
+                        <p className="text-[13px] font-bold text-primary leading-tight">
+                          {Number(fb.uploadSpeed).toFixed(1)} <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
+                        </p>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Comparison badge */}

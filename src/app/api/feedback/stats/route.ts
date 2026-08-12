@@ -15,6 +15,12 @@ export async function GET() {
         avgSmsReliability: sql<number>`round(avg(${feedbacks.smsReliability})::numeric, 1)`,
         avgNetworkStability: sql<number>`round(avg(${feedbacks.networkStability})::numeric, 1)`,
         avgOverallSatisfaction: sql<number>`round(avg(${feedbacks.overallSatisfaction})::numeric, 1)`,
+        avgDownloadSpeed: sql<number>`round(avg(${feedbacks.downloadSpeed})::numeric, 1)`,
+        avgUploadSpeed: sql<number>`round(avg(${feedbacks.uploadSpeed})::numeric, 1)`,
+        maxDownloadSpeed: sql<number>`max(${feedbacks.downloadSpeed})`,
+        maxUploadSpeed: sql<number>`max(${feedbacks.uploadSpeed})`,
+        minDownloadSpeed: sql<number>`min(${feedbacks.downloadSpeed})`,
+        minUploadSpeed: sql<number>`min(${feedbacks.uploadSpeed})`,
       })
       .from(feedbacks);
 
@@ -26,6 +32,12 @@ export async function GET() {
       avgSmsReliability: 0,
       avgNetworkStability: 0,
       avgOverallSatisfaction: 0,
+      avgDownloadSpeed: 0,
+      avgUploadSpeed: 0,
+      maxDownloadSpeed: 0,
+      maxUploadSpeed: 0,
+      minDownloadSpeed: 0,
+      minUploadSpeed: 0,
     };
 
     return NextResponse.json({ stats });

@@ -116,6 +116,17 @@ export interface Translations {
     sms: string;
     stability: string;
     vsBefore: string;
+    speedAnalysis: string;
+    speedAnalysisSubtitle: string;
+    avgDownloadSpeed: string;
+    avgUploadSpeed: string;
+    maxDownloadSpeed: string;
+    maxUploadSpeed: string;
+    minDownloadSpeed: string;
+    minUploadSpeed: string;
+    download: string;
+    upload: string;
+    mbps: string;
     comparisonLabels: {
       muchBetter: string;
       better: string;
@@ -284,6 +295,17 @@ export const translations: Record<Language, Translations> = {
       sms: "SMS",
       stability: "Stability",
       vsBefore: "vs. Before",
+      speedAnalysis: "Speed Analysis",
+      speedAnalysisSubtitle: "Download vs Upload speed comparison across all reports",
+      avgDownloadSpeed: "Avg Download",
+      avgUploadSpeed: "Avg Upload",
+      maxDownloadSpeed: "Max Download",
+      maxUploadSpeed: "Max Upload",
+      minDownloadSpeed: "Min Download",
+      minUploadSpeed: "Min Upload",
+      download: "Download",
+      upload: "Upload",
+      mbps: "Mbps",
       comparisonLabels: {
         muchBetter: "Much Better",
         better: "Better",
@@ -468,6 +490,17 @@ export const translations: Record<Language, Translations> = {
       sms: "SMS",
       stability: "Stabilità",
       vsBefore: "risp. a Prima",
+      speedAnalysis: "Analisi Velocità",
+      speedAnalysisSubtitle: "Confronto velocità Download vs Upload in tutti i rapporti",
+      avgDownloadSpeed: "Download Medio",
+      avgUploadSpeed: "Upload Medio",
+      maxDownloadSpeed: "Download Max",
+      maxUploadSpeed: "Upload Max",
+      minDownloadSpeed: "Download Min",
+      minUploadSpeed: "Upload Min",
+      download: "Download",
+      upload: "Upload",
+      mbps: "Mbps",
       comparisonLabels: {
         muchBetter: "Molto Migliore",
         better: "Migliore",
