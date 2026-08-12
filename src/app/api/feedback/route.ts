@@ -36,15 +36,13 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Validate ratings are 1-5
+    // Validate rating fields are 1-5
     const ratingFields = [
       "signalStrength",
       "dataSpeed",
       "callQuality",
       "smsReliability",
       "networkStability",
-      "downloadSpeed",
-      "uploadSpeed",
       "overallSatisfaction",
     ];
 
@@ -53,6 +51,18 @@ export async function POST(request: NextRequest) {
       if (isNaN(val) || val < 1 || val > 5) {
         return NextResponse.json(
           { error: `${field} must be a number between 1 and 5` },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Validate speed values are positive numbers
+    const speedFields = ["downloadSpeed", "uploadSpeed"];
+    for (const field of speedFields) {
+      const val = Number(body[field]);
+      if (isNaN(val) || val <= 0) {
+        return NextResponse.json(
+          { error: `${field} must be a valid positive number` },
           { status: 400 }
         );
       }
