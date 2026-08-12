@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BookOpen, Smartphone, Settings2, RefreshCcw, ArrowRight, ArrowDown } from "lucide-react";
 import { translations, type Language } from "@/data/translations";
 
@@ -12,6 +12,7 @@ export default function Guide({ language }: GuideProps) {
   const t = translations[language].guide;
   const [guideType, setGuideType] = useState<"volte" | "manual">("volte");
   const [deviceType, setDeviceType] = useState<"android" | "iphone">("android");
+  const [activeStep, setActiveStep] = useState(0);
 
   const selectedSteps =
     guideType === "volte"
@@ -24,6 +25,11 @@ export default function Guide({ language }: GuideProps) {
 
   const guideTitle = guideType === "volte" ? t.voLTETitle : t.manualSelectionTitle;
   const guideSubtitle = guideType === "volte" ? t.voLTEDescription : t.manualSelectionDescription;
+  const currentStepText = selectedSteps[activeStep] || "";
+
+  useEffect(() => {
+    setActiveStep(0);
+  }, [guideType, deviceType]);
 
   return (
     <div className="animate-slide-up px-4 space-y-5">
@@ -116,22 +122,35 @@ export default function Guide({ language }: GuideProps) {
             <div className="text-xs text-slate-400">{t.selectNetworkLabel}</div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 lg:grid-cols-[1.2fr_0.9fr]">
             <div className="rounded-3xl bg-slate-900 p-4">
-              <p className="text-sm text-slate-300 mb-3">{guideSubtitle}</p>
-              <ol className="list-decimal list-inside space-y-3 text-sm text-slate-200">
+              <p className="text-sm text-slate-300 mb-4">{guideSubtitle}</p>
+              <div className="space-y-3">
                 {selectedSteps.map((step, index) => (
-                  <li key={index} className="pl-1">
-                    {step}
-                  </li>
+                  <button
+                    key={index}
+                    type="button"
+                    onClick={() => setActiveStep(index)}
+                    className={`w-full text-left rounded-3xl border px-4 py-4 transition-all ${
+                      index === activeStep
+                        ? "border-accent-blue bg-accent-blue/10 text-white"
+                        : "border-slate-800 bg-slate-950 text-slate-300 hover:border-slate-700"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-3">
+                      <span className="text-sm font-semibold">Step {index + 1}</span>
+                      <span className="text-xs text-slate-400">{deviceType === "android" ? "Android" : "iPhone"}</span>
+                    </div>
+                    <p className="mt-2 text-sm leading-relaxed">{step}</p>
+                  </button>
                 ))}
-              </ol>
+              </div>
             </div>
             <div className="rounded-3xl bg-slate-900 p-4">
-              <div className="h-full rounded-3xl bg-slate-800 p-4">
+              <div className="h-full rounded-3xl border border-slate-700 bg-slate-800 p-4">
                 <div className="flex items-center justify-between mb-4">
                   <span className="rounded-full bg-slate-700 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-slate-400">
-                    {deviceType === "android" ? "Android UI" : "iOS UI"}
+                    {deviceType === "android" ? "Android Mockup" : "iPhone Mockup"}
                   </span>
                   <div className="flex gap-1">
                     <span className="w-2.5 h-2.5 rounded-full bg-slate-600" />
@@ -139,34 +158,19 @@ export default function Guide({ language }: GuideProps) {
                     <span className="w-2.5 h-2.5 rounded-full bg-slate-600" />
                   </div>
                 </div>
-                <div className="space-y-3 text-slate-200">
-                  <p className="text-sm leading-relaxed">
-                    {guideType === "volte" ? t.voLTEDescription : t.manualSelectionDescription}
-                  </p>
-                  <div className="rounded-2xl border border-slate-700 bg-slate-900 p-3">
-                    <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500 mb-2">Tip</p>
-                    <p className="text-sm text-slate-300">{t.selectNetworkLabel}</p>
+                <div className="rounded-3xl bg-slate-950 p-5 text-slate-200">
+                  <div className="mb-3 text-xs uppercase tracking-[0.24em] text-slate-400">Current step</div>
+                  <div className="rounded-3xl border border-slate-700 bg-slate-900 p-4">
+                    <p className="text-sm text-slate-200">{currentStepText}</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="mt-5 rounded-3xl bg-slate-50 p-4 border border-slate-100">
-            <div className="flex items-start gap-2 mb-3">
-              <RefreshCcw size={18} className="text-accent-yellow" />
-              <div>
-                <h3 className="font-semibold text-sm text-primary">{t.notesTitle}</h3>
-                <p className="text-sm text-slate-500 mt-1">{t.networkIssueDescription}</p>
-              </div>
-            </div>
-            <div className="space-y-2 text-sm text-slate-600">
-              <p>{t.noteRestart}</p>
-              <p>{t.noteVoLTE}</p>
-              <p>{t.noteSamsung}</p>
-              <p>{t.noteApple}</p>
-              <p>{t.noteOtherAndroid}</p>
-            </div>
+          <div className="mt-5 rounded-3xl bg-slate-50 p-4 border border-slate-100 text-slate-700">
+            <p className="font-semibold mb-2">If data works but voice does not</p>
+            <p className="text-sm text-slate-600">{t.noteRestart}</p>
           </div>
         </div>
       </div>
