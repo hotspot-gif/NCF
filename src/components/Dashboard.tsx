@@ -50,8 +50,11 @@ interface FeedbackItem {
   postCode: string | null;
   signalStrength: number;
   dataSpeed: number;
-  downloadSpeed: number | null;
-  uploadSpeed: number | null;
+  downloadSpeed: number;
+  uploadSpeed: number;
+  timDownloadSpeed: number | null;
+  timUploadSpeed: number | null;
+  timSpeedtestUrl: string | null;
   callQuality: number;
   smsReliability: number;
   networkStability: number;
@@ -472,14 +475,7 @@ export default function Dashboard({ language }: DashboardProps) {
                           {td.download}
                         </p>
                         <p className="text-[13px] font-bold text-primary leading-tight">
-                          {fb.downloadSpeed !== null && fb.downloadSpeed !== undefined ? (
-                            <>
-                              {Number(fb.downloadSpeed).toFixed(1)}{" "}
-                              <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
-                            </>
-                          ) : (
-                            <span className="text-[9px] text-slate-300 font-medium">—</span>
-                          )}
+                          {Number(fb.downloadSpeed).toFixed(1)} <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
                         </p>
                       </div>
                     </div>
@@ -490,14 +486,7 @@ export default function Dashboard({ language }: DashboardProps) {
                           {td.upload}
                         </p>
                         <p className="text-[13px] font-bold text-primary leading-tight">
-                          {fb.uploadSpeed !== null && fb.uploadSpeed !== undefined ? (
-                            <>
-                              {Number(fb.uploadSpeed).toFixed(1)}{" "}
-                              <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
-                            </>
-                          ) : (
-                            <span className="text-[9px] text-slate-300 font-medium">—</span>
-                          )}
+                          {Number(fb.uploadSpeed).toFixed(1)} <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
                         </p>
                       </div>
                     </div>

@@ -18,6 +18,9 @@ export async function POST(request: NextRequest) {
       "postCode",
       "signalStrength",
       "dataSpeed",
+      "downloadSpeed",
+      "uploadSpeed",
+      "speedtestUrl",
       "callQuality",
       "smsReliability",
       "networkStability",
@@ -54,9 +57,28 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Validate optional speed values are non-negative numbers (allow 0 and decimals)
+    // Validate speed values are non-negative numbers (allow 0 and decimals)
     const speedFields = ["downloadSpeed", "uploadSpeed"];
     for (const field of speedFields) {
+      const val = Number(body[field]);
+      if (isNaN(val) || val < 0) {
+        return NextResponse.json(
+          { error: `${field} must be a valid non-negative number` },
+          { status: 400 }
+        );
+      }
+    }
+
+    if (typeof body.speedtestUrl !== "string" || !body.speedtestUrl.trim()) {
+      return NextResponse.json(
+        { error: "speedtestUrl must be a valid URL string" },
+        { status: 400 }
+      );
+    }
+
+    // Validate optional TIM speed values are non-negative numbers (allow 0 and decimals)
+    const timSpeedFields = ["timDownloadSpeed", "timUploadSpeed"];
+    for (const field of timSpeedFields) {
       if (body[field] === undefined || body[field] === null || body[field] === "") {
         continue;
       }
@@ -69,10 +91,14 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    if (body.speedtestUrl !== undefined && body.speedtestUrl !== null && body.speedtestUrl !== "") {
-      if (typeof body.speedtestUrl !== "string" || !body.speedtestUrl.trim()) {
+    if (
+      body.timSpeedtestUrl !== undefined &&
+      body.timSpeedtestUrl !== null &&
+      body.timSpeedtestUrl !== ""
+    ) {
+      if (typeof body.timSpeedtestUrl !== "string" || !body.timSpeedtestUrl.trim()) {
         return NextResponse.json(
-          { error: "speedtestUrl must be a valid URL string" },
+          { error: "timSpeedtestUrl must be a valid URL string" },
           { status: 400 }
         );
       }
@@ -92,18 +118,21 @@ export async function POST(request: NextRequest) {
         callQuality: Number(body.callQuality),
         smsReliability: Number(body.smsReliability),
         networkStability: Number(body.networkStability),
-        downloadSpeed:
-          body.downloadSpeed === undefined || body.downloadSpeed === null || body.downloadSpeed === ""
+        downloadSpeed: Number(body.downloadSpeed),
+        uploadSpeed: Number(body.uploadSpeed),
+        speedtestUrl: body.speedtestUrl.trim(),
+        timDownloadSpeed:
+          body.timDownloadSpeed === undefined || body.timDownloadSpeed === null || body.timDownloadSpeed === ""
             ? null
-            : Number(body.downloadSpeed),
-        uploadSpeed:
-          body.uploadSpeed === undefined || body.uploadSpeed === null || body.uploadSpeed === ""
+            : Number(body.timDownloadSpeed),
+        timUploadSpeed:
+          body.timUploadSpeed === undefined || body.timUploadSpeed === null || body.timUploadSpeed === ""
             ? null
-            : Number(body.uploadSpeed),
-        speedtestUrl:
-          body.speedtestUrl === undefined || body.speedtestUrl === null || body.speedtestUrl === ""
+            : Number(body.timUploadSpeed),
+        timSpeedtestUrl:
+          body.timSpeedtestUrl === undefined || body.timSpeedtestUrl === null || body.timSpeedtestUrl === ""
             ? null
-            : String(body.speedtestUrl).trim(),
+            : String(body.timSpeedtestUrl).trim(),
         overallSatisfaction: Number(body.overallSatisfaction),
         comparedToBefore: body.comparedToBefore,
         primaryIssue: body.primaryIssue || null,

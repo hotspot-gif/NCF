@@ -15,12 +15,12 @@ export async function GET() {
         avgSmsReliability: sql<number>`round(avg(${feedbacks.smsReliability})::numeric, 1)`,
         avgNetworkStability: sql<number>`round(avg(${feedbacks.networkStability})::numeric, 1)`,
         avgOverallSatisfaction: sql<number>`round(avg(${feedbacks.overallSatisfaction})::numeric, 1)`,
-        avgDownloadSpeed: sql<number>`round(coalesce(avg(${feedbacks.downloadSpeed}), 0)::numeric, 1)`,
-        avgUploadSpeed: sql<number>`round(coalesce(avg(${feedbacks.uploadSpeed}), 0)::numeric, 1)`,
-        maxDownloadSpeed: sql<number>`coalesce(max(${feedbacks.downloadSpeed}), 0)`,
-        maxUploadSpeed: sql<number>`coalesce(max(${feedbacks.uploadSpeed}), 0)`,
-        minDownloadSpeed: sql<number>`coalesce(min(${feedbacks.downloadSpeed}), 0)`,
-        minUploadSpeed: sql<number>`coalesce(min(${feedbacks.uploadSpeed}), 0)`,
+        avgDownloadSpeed: sql<number>`round(avg(${feedbacks.downloadSpeed})::numeric, 1)`,
+        avgUploadSpeed: sql<number>`round(avg(${feedbacks.uploadSpeed})::numeric, 1)`,
+        maxDownloadSpeed: sql<number>`max(${feedbacks.downloadSpeed})`,
+        maxUploadSpeed: sql<number>`max(${feedbacks.uploadSpeed})`,
+        minDownloadSpeed: sql<number>`min(${feedbacks.downloadSpeed})`,
+        minUploadSpeed: sql<number>`min(${feedbacks.uploadSpeed})`,
       })
       .from(feedbacks);
 

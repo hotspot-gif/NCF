@@ -31,6 +31,9 @@ interface FormData {
   downloadSpeed: string;
   uploadSpeed: string;
   speedtestUrl: string;
+  timDownloadSpeed: string;
+  timUploadSpeed: string;
+  timSpeedtestUrl: string;
   callQuality: number;
   smsReliability: number;
   networkStability: number;
@@ -55,6 +58,9 @@ const initialFormData: FormData = {
   downloadSpeed: "",
   uploadSpeed: "",
   speedtestUrl: "",
+  timDownloadSpeed: "",
+  timUploadSpeed: "",
+  timSpeedtestUrl: "",
   callQuality: 0,
   smsReliability: 0,
   networkStability: 0,
@@ -132,6 +138,10 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
   const canProceedStep2 =
     formData.signalStrength > 0 &&
     formData.dataSpeed > 0 &&
+    formData.downloadSpeed !== "" &&
+    Number(formData.downloadSpeed) >= 0 &&
+    formData.uploadSpeed !== "" &&
+    Number(formData.uploadSpeed) >= 0 &&
     formData.callQuality > 0 &&
     formData.smsReliability > 0 &&
     formData.networkStability > 0;
@@ -153,9 +163,14 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
     try {
       const payload = {
         ...formData,
-        downloadSpeed: formData.downloadSpeed !== "" ? Number(formData.downloadSpeed) : null,
-        uploadSpeed: formData.uploadSpeed !== "" ? Number(formData.uploadSpeed) : null,
-        speedtestUrl: formData.speedtestUrl.trim() !== "" ? formData.speedtestUrl.trim() : null,
+        downloadSpeed: Number(formData.downloadSpeed),
+        uploadSpeed: Number(formData.uploadSpeed),
+        timDownloadSpeed:
+          formData.timDownloadSpeed !== "" ? Number(formData.timDownloadSpeed) : null,
+        timUploadSpeed:
+          formData.timUploadSpeed !== "" ? Number(formData.timUploadSpeed) : null,
+        timSpeedtestUrl:
+          formData.timSpeedtestUrl.trim() !== "" ? formData.timSpeedtestUrl.trim() : null,
       };
       const res = await fetch("/api/feedback", {
         method: "POST",
@@ -471,7 +486,6 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
               <div>
                 <label className="block text-sm font-semibold text-primary mb-0.5">
                   {tf.downloadSpeed}
-                  <span className="text-[10px] text-slate-300 ml-auto bg-slate-100 px-2 py-0.5 rounded-full font-medium ml-2">{t.common.optional}</span>
                 </label>
                 <input
                   type="number"
@@ -490,7 +504,6 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
               <div>
                 <label className="block text-sm font-semibold text-primary mb-0.5">
                   {tf.uploadSpeed}
-                  <span className="text-[10px] text-slate-300 ml-auto bg-slate-100 px-2 py-0.5 rounded-full font-medium ml-2">{t.common.optional}</span>
                 </label>
                 <input
                   type="number"
@@ -510,7 +523,6 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
             <div className="mb-5">
               <label className="block text-sm font-semibold text-primary mb-0.5">
                 {tf.speedtestUrl}
-                <span className="text-[10px] text-slate-300 ml-auto bg-slate-100 px-2 py-0.5 rounded-full font-medium ml-2">{t.common.optional}</span>
               </label>
               <input
                 type="url"
@@ -519,6 +531,66 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
                 placeholder={tf.speedtestUrlPlaceholder}
                 className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all"
               />
+            </div>
+
+            {/* TIM Network Speed Test Results (Optional) */}
+            <div className="mt-6 pt-5 border-t border-slate-100">
+              <div className="flex items-center justify-between mb-1">
+                <h4 className="text-xs font-bold text-primary/80 uppercase tracking-wide">
+                  {tf.timSpeedtestTitle}
+                </h4>
+                <span className="text-[10px] text-slate-300 bg-slate-100 px-2 py-0.5 rounded-full font-medium">{t.common.optional}</span>
+              </div>
+              <div className="grid gap-4 lg:grid-cols-2">
+                <div>
+                  <label className="block text-sm font-semibold text-primary mb-0.5">
+                    {tf.timDownloadSpeed}
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.timDownloadSpeed}
+                    onChange={(e) => updateField("timDownloadSpeed", e.target.value)}
+                    step="0.1"
+                    min="0"
+                    inputMode="decimal"
+                    placeholder={tf.timDownloadSpeedPlaceholder}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all"
+                  />
+                  <p className="text-[11px] text-slate-400 mt-2">
+                    {tf.timDownloadSpeedDesc}
+                  </p>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-primary mb-0.5">
+                    {tf.timUploadSpeed}
+                  </label>
+                  <input
+                    type="number"
+                    value={formData.timUploadSpeed}
+                    onChange={(e) => updateField("timUploadSpeed", e.target.value)}
+                    step="0.1"
+                    min="0"
+                    inputMode="decimal"
+                    placeholder={tf.timUploadSpeedPlaceholder}
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all"
+                  />
+                  <p className="text-[11px] text-slate-400 mt-2">
+                    {tf.timUploadSpeedDesc}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4">
+                <label className="block text-sm font-semibold text-primary mb-0.5">
+                  {tf.timSpeedtestUrl}
+                </label>
+                <input
+                  type="url"
+                  value={formData.timSpeedtestUrl}
+                  onChange={(e) => updateField("timSpeedtestUrl", e.target.value)}
+                  placeholder={tf.timSpeedtestUrlPlaceholder}
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-accent-blue/20 focus:border-accent-blue transition-all"
+                />
+              </div>
             </div>
             <StarRating
               label={tf.callQuality}

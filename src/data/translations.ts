@@ -51,6 +51,15 @@ export interface Translations {
     uploadSpeedPlaceholder: string;
     speedtestUrl: string;
     speedtestUrlPlaceholder: string;
+    timSpeedtestTitle: string;
+    timDownloadSpeed: string;
+    timDownloadSpeedDesc: string;
+    timDownloadSpeedPlaceholder: string;
+    timUploadSpeed: string;
+    timUploadSpeedDesc: string;
+    timUploadSpeedPlaceholder: string;
+    timSpeedtestUrl: string;
+    timSpeedtestUrlPlaceholder: string;
     callQuality: string;
     callQualityDesc: string;
     smsReliability: string;
@@ -212,6 +221,15 @@ export const translations: Record<Language, Translations> = {
       uploadSpeedPlaceholder: "Enter upload speed in Mbps",
       speedtestUrl: "Speedtest Result URL",
       speedtestUrlPlaceholder: "Paste the Speedtest result link here",
+      timSpeedtestTitle: "TIM Network Speed Test",
+      timDownloadSpeed: "⬇️ TIM Download Speed",
+      timDownloadSpeedDesc: "Measured TIM download throughput from speedtest results",
+      timDownloadSpeedPlaceholder: "Enter TIM download speed in Mbps",
+      timUploadSpeed: "⬆️ TIM Upload Speed",
+      timUploadSpeedDesc: "Measured TIM upload throughput from speedtest results",
+      timUploadSpeedPlaceholder: "Enter TIM upload speed in Mbps",
+      timSpeedtestUrl: "TIM Speedtest Result URL",
+      timSpeedtestUrlPlaceholder: "Paste the TIM Speedtest result link here",
       callQuality: "📞 Call Quality",
       callQualityDesc: "Voice clarity and call connection reliability",
       smsReliability: "💬 SMS Reliability",
@@ -407,6 +425,15 @@ export const translations: Record<Language, Translations> = {
       uploadSpeedPlaceholder: "Inserisci la velocità di upload in Mbps",
       speedtestUrl: "URL Risultato Speedtest",
       speedtestUrlPlaceholder: "Incolla qui il link del risultato Speedtest",
+      timSpeedtestTitle: "Speed Test Rete TIM",
+      timDownloadSpeed: "⬇️ Velocità Download TIM",
+      timDownloadSpeedDesc: "Velocità di download TIM misurata dai risultati Speedtest",
+      timDownloadSpeedPlaceholder: "Inserisci la velocità di download TIM in Mbps",
+      timUploadSpeed: "⬆️ Velocità Upload TIM",
+      timUploadSpeedDesc: "Velocità di upload TIM misurata dai risultati Speedtest",
+      timUploadSpeedPlaceholder: "Inserisci la velocità di upload TIM in Mbps",
+      timSpeedtestUrl: "URL Risultato Speedtest TIM",
+      timSpeedtestUrlPlaceholder: "Incolla qui il link del risultato Speedtest TIM",
       callQuality: "📞 Qualità Chiamate",
       callQualityDesc: "Chiarezza vocale e affidabilità della connessione chiamata",
       smsReliability: "💬 Affidabilità SMS",
