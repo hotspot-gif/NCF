@@ -50,8 +50,8 @@ interface FeedbackItem {
   postCode: string | null;
   signalStrength: number;
   dataSpeed: number;
-  downloadSpeed: number;
-  uploadSpeed: number;
+  downloadSpeed: number | null;
+  uploadSpeed: number | null;
   callQuality: number;
   smsReliability: number;
   networkStability: number;
@@ -472,7 +472,14 @@ export default function Dashboard({ language }: DashboardProps) {
                           {td.download}
                         </p>
                         <p className="text-[13px] font-bold text-primary leading-tight">
-                          {Number(fb.downloadSpeed).toFixed(1)} <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
+                          {fb.downloadSpeed !== null && fb.downloadSpeed !== undefined ? (
+                            <>
+                              {Number(fb.downloadSpeed).toFixed(1)}{" "}
+                              <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
+                            </>
+                          ) : (
+                            <span className="text-[9px] text-slate-300 font-medium">—</span>
+                          )}
                         </p>
                       </div>
                     </div>
@@ -483,7 +490,14 @@ export default function Dashboard({ language }: DashboardProps) {
                           {td.upload}
                         </p>
                         <p className="text-[13px] font-bold text-primary leading-tight">
-                          {Number(fb.uploadSpeed).toFixed(1)} <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
+                          {fb.uploadSpeed !== null && fb.uploadSpeed !== undefined ? (
+                            <>
+                              {Number(fb.uploadSpeed).toFixed(1)}{" "}
+                              <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
+                            </>
+                          ) : (
+                            <span className="text-[9px] text-slate-300 font-medium">—</span>
+                          )}
                         </p>
                       </div>
                     </div>

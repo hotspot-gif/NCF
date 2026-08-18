@@ -24,10 +24,10 @@ export const feedbacks = pgTable("feedbacks", {
   callQuality: integer("call_quality").notNull(),
   smsReliability: integer("sms_reliability").notNull(),
   networkStability: integer("network_stability").notNull(),
-  // Speedtest results
-  downloadSpeed: doublePrecision("download_speed").notNull(),
-  uploadSpeed: doublePrecision("upload_speed").notNull(),
-  speedtestUrl: varchar("speedtest_url", { length: 2048 }).notNull(),
+  // Speedtest results (optional)
+  downloadSpeed: doublePrecision("download_speed"),
+  uploadSpeed: doublePrecision("upload_speed"),
+  speedtestUrl: varchar("speedtest_url", { length: 2048 }),
   // Comparison
   overallSatisfaction: integer("overall_satisfaction").notNull(),
   comparedToBefore: varchar("compared_to_before", { length: 50 }).notNull(),

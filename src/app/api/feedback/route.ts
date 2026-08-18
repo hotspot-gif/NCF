@@ -21,9 +21,6 @@ export async function POST(request: NextRequest) {
       "callQuality",
       "smsReliability",
       "networkStability",
-      "downloadSpeed",
-      "uploadSpeed",
-      "speedtestUrl",
       "overallSatisfaction",
       "comparedToBefore",
     ];
@@ -57,9 +54,12 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Validate speed values are non-negative numbers (allow 0 and decimals)
+    // Validate optional speed values are non-negative numbers (allow 0 and decimals)
     const speedFields = ["downloadSpeed", "uploadSpeed"];
     for (const field of speedFields) {
+      if (body[field] === undefined || body[field] === null || body[field] === "") {
+        continue;
+      }
       const val = Number(body[field]);
       if (isNaN(val) || val < 0) {
         return NextResponse.json(
@@ -69,11 +69,13 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    if (typeof body.speedtestUrl !== "string" || !body.speedtestUrl.trim()) {
-      return NextResponse.json(
-        { error: "speedtestUrl must be a valid URL string" },
-        { status: 400 }
-      );
+    if (body.speedtestUrl !== undefined && body.speedtestUrl !== null && body.speedtestUrl !== "") {
+      if (typeof body.speedtestUrl !== "string" || !body.speedtestUrl.trim()) {
+        return NextResponse.json(
+          { error: "speedtestUrl must be a valid URL string" },
+          { status: 400 }
+        );
+      }
     }
 
     const newFeedback = await db
@@ -90,9 +92,18 @@ export async function POST(request: NextRequest) {
         callQuality: Number(body.callQuality),
         smsReliability: Number(body.smsReliability),
         networkStability: Number(body.networkStability),
-        downloadSpeed: Number(body.downloadSpeed),
-        uploadSpeed: Number(body.uploadSpeed),
-        speedtestUrl: body.speedtestUrl.trim(),
+        downloadSpeed:
+          body.downloadSpeed === undefined || body.downloadSpeed === null || body.downloadSpeed === ""
+            ? null
+            : Number(body.downloadSpeed),
+        uploadSpeed:
+          body.uploadSpeed === undefined || body.uploadSpeed === null || body.uploadSpeed === ""
+            ? null
+            : Number(body.uploadSpeed),
+        speedtestUrl:
+          body.speedtestUrl === undefined || body.speedtestUrl === null || body.speedtestUrl === ""
+            ? null
+            : String(body.speedtestUrl).trim(),
         overallSatisfaction: Number(body.overallSatisfaction),
         comparedToBefore: body.comparedToBefore,
         primaryIssue: body.primaryIssue || null,

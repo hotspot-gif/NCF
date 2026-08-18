@@ -132,10 +132,6 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
   const canProceedStep2 =
     formData.signalStrength > 0 &&
     formData.dataSpeed > 0 &&
-    formData.downloadSpeed !== "" &&
-    Number(formData.downloadSpeed) >= 0 &&
-    formData.uploadSpeed !== "" &&
-    Number(formData.uploadSpeed) >= 0 &&
     formData.callQuality > 0 &&
     formData.smsReliability > 0 &&
     formData.networkStability > 0;
@@ -157,8 +153,9 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
     try {
       const payload = {
         ...formData,
-        downloadSpeed: Number(formData.downloadSpeed),
-        uploadSpeed: Number(formData.uploadSpeed),
+        downloadSpeed: formData.downloadSpeed !== "" ? Number(formData.downloadSpeed) : null,
+        uploadSpeed: formData.uploadSpeed !== "" ? Number(formData.uploadSpeed) : null,
+        speedtestUrl: formData.speedtestUrl.trim() !== "" ? formData.speedtestUrl.trim() : null,
       };
       const res = await fetch("/api/feedback", {
         method: "POST",
@@ -474,6 +471,7 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
               <div>
                 <label className="block text-sm font-semibold text-primary mb-0.5">
                   {tf.downloadSpeed}
+                  <span className="text-[10px] text-slate-300 ml-auto bg-slate-100 px-2 py-0.5 rounded-full font-medium ml-2">{t.common.optional}</span>
                 </label>
                 <input
                   type="number"
@@ -492,6 +490,7 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
               <div>
                 <label className="block text-sm font-semibold text-primary mb-0.5">
                   {tf.uploadSpeed}
+                  <span className="text-[10px] text-slate-300 ml-auto bg-slate-100 px-2 py-0.5 rounded-full font-medium ml-2">{t.common.optional}</span>
                 </label>
                 <input
                   type="number"
@@ -511,6 +510,7 @@ export default function FeedbackForm({ language }: FeedbackFormProps) {
             <div className="mb-5">
               <label className="block text-sm font-semibold text-primary mb-0.5">
                 {tf.speedtestUrl}
+                <span className="text-[10px] text-slate-300 ml-auto bg-slate-100 px-2 py-0.5 rounded-full font-medium ml-2">{t.common.optional}</span>
               </label>
               <input
                 type="url"
