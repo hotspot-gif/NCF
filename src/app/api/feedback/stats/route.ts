@@ -21,6 +21,13 @@ export async function GET() {
         maxUploadSpeed: sql<number>`max(${feedbacks.uploadSpeed})`,
         minDownloadSpeed: sql<number>`min(${feedbacks.downloadSpeed})`,
         minUploadSpeed: sql<number>`min(${feedbacks.uploadSpeed})`,
+        avgTimDownloadSpeed: sql<number>`round(avg(${feedbacks.timDownloadSpeed})::numeric, 1)`,
+        avgTimUploadSpeed: sql<number>`round(avg(${feedbacks.timUploadSpeed})::numeric, 1)`,
+        maxTimDownloadSpeed: sql<number>`max(${feedbacks.timDownloadSpeed})`,
+        maxTimUploadSpeed: sql<number>`max(${feedbacks.timUploadSpeed})`,
+        minTimDownloadSpeed: sql<number>`min(${feedbacks.timDownloadSpeed})`,
+        minTimUploadSpeed: sql<number>`min(${feedbacks.timUploadSpeed})`,
+        timReportsCount: sql<number>`count(${feedbacks.timDownloadSpeed})`,
       })
       .from(feedbacks);
 
@@ -38,6 +45,13 @@ export async function GET() {
       maxUploadSpeed: 0,
       minDownloadSpeed: 0,
       minUploadSpeed: 0,
+      avgTimDownloadSpeed: 0,
+      avgTimUploadSpeed: 0,
+      maxTimDownloadSpeed: 0,
+      maxTimUploadSpeed: 0,
+      minTimDownloadSpeed: 0,
+      minTimUploadSpeed: 0,
+      timReportsCount: 0,
     };
 
     return NextResponse.json({ stats });

@@ -136,6 +136,14 @@ export interface Translations {
     download: string;
     upload: string;
     mbps: string;
+    networkComparison: string;
+    networkComparisonSubtitle: string;
+    lycamobile: string;
+    lycamobileShort: string;
+    tim: string;
+    timShort: string;
+    timReports: string;
+    noTimData: string;
     comparisonLabels: {
       muchBetter: string;
       better: string;
@@ -324,6 +332,14 @@ export const translations: Record<Language, Translations> = {
       download: "Download",
       upload: "Upload",
       mbps: "Mbps",
+      networkComparison: "Lycamobile vs TIM",
+      networkComparisonSubtitle: "Download & upload speed comparison between Lycamobile and TIM network",
+      lycamobile: "Lycamobile",
+      lycamobileShort: "Lyca",
+      tim: "TIM",
+      timShort: "TIM",
+      timReports: "TIM reports",
+      noTimData: "No TIM speed data available",
       comparisonLabels: {
         muchBetter: "Much Better",
         better: "Better",
@@ -528,6 +544,14 @@ export const translations: Record<Language, Translations> = {
       download: "Download",
       upload: "Upload",
       mbps: "Mbps",
+      networkComparison: "Lycamobile vs TIM",
+      networkComparisonSubtitle: "Confronto velocità download e upload tra rete Lycamobile e TIM",
+      lycamobile: "Lycamobile",
+      lycamobileShort: "Lyca",
+      tim: "TIM",
+      timShort: "TIM",
+      timReports: "rapporti TIM",
+      noTimData: "Nessun dato velocità TIM disponibile",
       comparisonLabels: {
         muchBetter: "Molto Migliore",
         better: "Migliore",

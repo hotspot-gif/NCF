@@ -38,6 +38,13 @@ interface Stats {
   maxUploadSpeed: number;
   minDownloadSpeed: number;
   minUploadSpeed: number;
+  avgTimDownloadSpeed: number;
+  avgTimUploadSpeed: number;
+  maxTimDownloadSpeed: number;
+  maxTimUploadSpeed: number;
+  minTimDownloadSpeed: number;
+  minTimUploadSpeed: number;
+  timReportsCount: number;
 }
 
 interface FeedbackItem {
@@ -363,6 +370,122 @@ export default function Dashboard({ language }: DashboardProps) {
         </div>
       )}
 
+      {/* Lycamobile vs TIM Comparison */}
+      {stats && stats.totalResponses > 0 && (
+        <div className="px-4 mb-5">
+          <div className="bg-bg-card rounded-2xl p-5 shadow-sm border border-accent-peach/30">
+            <h3 className="font-bold text-primary mb-1 flex items-center gap-2 text-[15px]">
+              <BarChart3 size={16} className="text-accent-green" />
+              {td.networkComparison}
+            </h3>
+            <p className="text-[10px] text-slate-400 mb-4 ml-6">
+              {td.networkComparisonSubtitle}
+            </p>
+
+            {/* Comparison Bars */}
+            <div className="space-y-4">
+              {/* Download Comparison */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">
+                    {td.download}
+                  </span>
+                  <span className="text-[10px] text-slate-400">
+                    {stats.timReportsCount > 0 ? `${stats.timReportsCount} ${td.timReports}` : td.noTimData}
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  {/* Lycamobile Download */}
+                  <div className="flex items-center gap-2">
+                    <span className="w-16 text-[9px] font-semibold text-accent-blue uppercase tracking-wide shrink-0">
+                      {td.lycamobileShort}
+                    </span>
+                    <div className="flex-1 bg-slate-100 rounded-full h-4 overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full transition-all duration-1000"
+                        style={{ width: `${Math.min((Number(stats.avgDownloadSpeed) / Math.max(Number(stats.maxDownloadSpeed), Number(stats.maxTimDownloadSpeed), 1)) * 100, 100)}%` }}
+                      />
+                    </div>
+                    <span className="w-14 text-right text-[11px] font-bold text-primary shrink-0">
+                      {Number(stats.avgDownloadSpeed).toFixed(1)} <span className="text-[8px] text-slate-300 font-medium">{td.mbps}</span>
+                    </span>
+                  </div>
+                  {/* TIM Download */}
+                  <div className="flex items-center gap-2">
+                    <span className="w-16 text-[9px] font-semibold text-accent-purple uppercase tracking-wide shrink-0">
+                      {td.timShort}
+                    </span>
+                    <div className="flex-1 bg-slate-100 rounded-full h-4 overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-accent-purple to-accent-peach rounded-full transition-all duration-1000"
+                        style={{ width: `${stats.timReportsCount > 0 ? Math.min((Number(stats.avgTimDownloadSpeed) / Math.max(Number(stats.maxDownloadSpeed), Number(stats.maxTimDownloadSpeed), 1)) * 100, 100) : 0}%` }}
+                      />
+                    </div>
+                    <span className="w-14 text-right text-[11px] font-bold text-primary shrink-0">
+                      {stats.timReportsCount > 0 ? `${Number(stats.avgTimDownloadSpeed).toFixed(1)}` : "—"} <span className="text-[8px] text-slate-300 font-medium">{td.mbps}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Upload Comparison */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wide">
+                    {td.upload}
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  {/* Lycamobile Upload */}
+                  <div className="flex items-center gap-2">
+                    <span className="w-16 text-[9px] font-semibold text-accent-blue uppercase tracking-wide shrink-0">
+                      {td.lycamobileShort}
+                    </span>
+                    <div className="flex-1 bg-slate-100 rounded-full h-4 overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-accent-blue to-accent-cyan rounded-full transition-all duration-1000"
+                        style={{ width: `${Math.min((Number(stats.avgUploadSpeed) / Math.max(Number(stats.maxUploadSpeed), Number(stats.maxTimUploadSpeed), 1)) * 100, 100)}%` }}
+                      />
+                    </div>
+                    <span className="w-14 text-right text-[11px] font-bold text-primary shrink-0">
+                      {Number(stats.avgUploadSpeed).toFixed(1)} <span className="text-[8px] text-slate-300 font-medium">{td.mbps}</span>
+                    </span>
+                  </div>
+                  {/* TIM Upload */}
+                  <div className="flex items-center gap-2">
+                    <span className="w-16 text-[9px] font-semibold text-accent-purple uppercase tracking-wide shrink-0">
+                      {td.timShort}
+                    </span>
+                    <div className="flex-1 bg-slate-100 rounded-full h-4 overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-accent-purple to-accent-peach rounded-full transition-all duration-1000"
+                        style={{ width: `${stats.timReportsCount > 0 ? Math.min((Number(stats.avgTimUploadSpeed) / Math.max(Number(stats.maxUploadSpeed), Number(stats.maxTimUploadSpeed), 1)) * 100, 100) : 0}%` }}
+                      />
+                    </div>
+                    <span className="w-14 text-right text-[11px] font-bold text-primary shrink-0">
+                      {stats.timReportsCount > 0 ? `${Number(stats.avgTimUploadSpeed).toFixed(1)}` : "—"} <span className="text-[8px] text-slate-300 font-medium">{td.mbps}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="flex items-center justify-center gap-4 mt-4 pt-3 border-t border-slate-100">
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-accent-blue to-accent-cyan" />
+                <span className="text-[10px] text-slate-500 font-medium">{td.lycamobile}</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-sm bg-gradient-to-r from-accent-purple to-accent-peach" />
+                <span className="text-[10px] text-slate-500 font-medium">{td.tim}</span>
+              </div>
+              <span className="text-[10px] text-slate-300 font-medium">({td.mbps})</span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Recent Feedbacks */}
       <div className="px-4">
         <h3 className="font-bold text-primary mb-3 flex items-center gap-2 text-[15px]">
@@ -472,7 +595,7 @@ export default function Dashboard({ language }: DashboardProps) {
                       <ArrowDown size={12} className="text-accent-blue shrink-0" />
                       <div className="flex-1 min-w-0">
                         <p className="text-[8px] text-slate-400 uppercase tracking-wider font-medium">
-                          {td.download}
+                          {td.lycamobileShort} {td.download}
                         </p>
                         <p className="text-[13px] font-bold text-primary leading-tight">
                           {Number(fb.downloadSpeed).toFixed(1)} <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
@@ -483,13 +606,39 @@ export default function Dashboard({ language }: DashboardProps) {
                       <ArrowUp size={12} className="text-accent-purple shrink-0" />
                       <div className="flex-1 min-w-0">
                         <p className="text-[8px] text-slate-400 uppercase tracking-wider font-medium">
-                          {td.upload}
+                          {td.lycamobileShort} {td.upload}
                         </p>
                         <p className="text-[13px] font-bold text-primary leading-tight">
                           {Number(fb.uploadSpeed).toFixed(1)} <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
                         </p>
                       </div>
                     </div>
+                    {fb.timDownloadSpeed !== null && fb.timDownloadSpeed !== undefined && (
+                      <div className="flex items-center gap-2 bg-accent-purple/5 rounded-xl px-3 py-2">
+                        <ArrowDown size={12} className="text-accent-purple shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[8px] text-slate-400 uppercase tracking-wider font-medium">
+                            {td.timShort} {td.download}
+                          </p>
+                          <p className="text-[13px] font-bold text-primary leading-tight">
+                            {Number(fb.timDownloadSpeed).toFixed(1)} <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    {fb.timUploadSpeed !== null && fb.timUploadSpeed !== undefined && (
+                      <div className="flex items-center gap-2 bg-accent-purple/5 rounded-xl px-3 py-2">
+                        <ArrowUp size={12} className="text-accent-purple shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[8px] text-slate-400 uppercase tracking-wider font-medium">
+                            {td.timShort} {td.upload}
+                          </p>
+                          <p className="text-[13px] font-bold text-primary leading-tight">
+                            {Number(fb.timUploadSpeed).toFixed(1)} <span className="text-[9px] text-slate-300 font-medium">{td.mbps}</span>
+                          </p>
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Comparison badge */}
